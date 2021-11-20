@@ -1,0 +1,73 @@
+﻿@model IEnumerable<SDE_FIC.Models.Matricula>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Situação
+                    </th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            @{int i = 1;}
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @i.
+                        @{i = i + 1;}
+                    </td>
+                    <td style="font-size:10pt;">
+                        @item.Aluno.Nome.ToUpper()
+                    </td>
+                    <td style="text-align:center; width: 100px;">
+                        @Html.DisplayFor(modelItem => item.Situacao)
+                    </td>
+                    <td style="text-align:center; width: 100px;">
+                        @*<a href="@Url.Action("Edit", "Matricula", new { id = item.IdMatricula })"><img src="~/Content/img/editar.png" alt="Editar" /></a>*@
+                        @*<a href="@Url.Action("Delete", "Matricula", new { id = item.IdMatricula })"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>*@
+                        
+                        <a href="#" type="button" data-toggle="modal" data-target="#modal_danger_@item.IdMatricula"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+
+                        <!--MODAL PARA EXCLUSÃO-->
+                        <div class="modal modal-danger fade in" id="modal_danger_@item.IdMatricula" style="display: none; padding-right: 17px;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Cuidado</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Tem certeza de que deseja excluir o aluno matriculado?</p>
+                                        <p>Nome: @item.Aluno.Nome</p>
+                                        <br />
+                                        <p>Caso existam registros de frequencia também serão removidos.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                        <a href="@Url.Action("Delete", "Matricula", new { id = item.IdMatricula })">
+                                            <button type="button" class="btn btn-outline">Delete</button>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </td>
+                </tr>
+            }
+            <tr><td colspan="4" style="font-weight: bold; text-align:center;">Total = @Model.Count().ToString() alunos</td></tr>
+
+        </table>

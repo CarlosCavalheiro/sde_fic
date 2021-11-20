@@ -1,0 +1,232 @@
+﻿@using SDE_FIC
+@model SDE_FIC.Models.Matricula
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Matricula";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    ViewBag.dataatual = DateTime.Now.Date.ToString("d");
+}
+
+
+
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Importar Alunos/Matrículas realizadas</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Turma: @Model.Turma.Descricao - @Model.Turma.Curso.CursoNome</h4>
+                                    <small>
+                                        <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                        <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                    </small>
+                                </div>
+
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+          
+                                <a href="~/Matricula/Matriculas/@Model.Turma.Idturma" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+
+                    <div class="col-md-12">
+
+                        <div class="box-body">
+
+                           
+                            <div class="alert alert-info alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h4><i class="icon fa fa-info"></i> Arquivo Modelo</h4>
+                                <a href="~/Content/Download/ModeloImportarAlunos.xlsx">Clique Aqui</a> para baixar arquivo modelo para importação
+                            </div>
+                            <div class="alert alert-warning alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h4><i class="icon fa fa-warning"></i> Atenção</h4>
+                                - Após a importação NÃO será possível desfazer a operação!
+                            </div>
+
+                            <div class="box box-solid box-warning">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Lista dos Alunos Importados </h3>
+                                </div>
+                                <div class="box-body">
+                                    @using (Html.BeginForm("UploadExcel", "Matricula", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="form-group col-md-12">
+                                            1. Escolha o arquivo:
+                                            <input type="file" id="excelfile" class="btn-default" name="excelfile" required data-val="true" />
+                                            @Html.HiddenFor(model => Model.IdTurma, new { @Value = ViewBag.turma_idturma })
+
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            2. Clique no botão abaixo:<br />
+                                            <input type="submit" value="Importar" class="btn btn-success" data-toggle="modal" data-target="#modal-carregando" />
+                                        </div>
+
+                                    }
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            @{ 
+                                List<SDE_FIC.Models.Aluno> _lAlunos = ViewBag.listarAlunos;
+
+                                if (_lAlunos.Count() > 0)
+                                {
+                                                        <div class="box box-solid box-success">
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">Lista dos Alunos Importados </h3>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <table cellpading="2" cellspacing="2" border="1" class="table table-bordered table-hover">
+                                                                    <tr>
+                                                                        <th>Data</th>
+                                                                        <th>Nome</th>
+                                                                        <th>Telefone Res</th>
+                                                                        <th>Telefone Cel</th>
+                                                                        <th>Email</th>
+                                                                        <th>Obs</th>
+                                                                        <th>CPF</th>
+
+                                                                    </tr>
+                                                                    @foreach (var aluno in _lAlunos)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@aluno.DataCadastro</td>
+                                                                            <td>@aluno.Nome</td>
+                                                                            <td>@aluno.TelefoneResidencial</td>
+                                                                            <td>@aluno.TelefoneCelular</td>
+                                                                            <td>@aluno.Email</td>
+                                                                            <td>@aluno.Observacao</td>
+                                                                            <td>@aluno.CPF</td>
+                                                                        </tr>
+
+                                                                    }
+
+                                                                </table>
+
+                                                            </div>
+                                                            <div class="box-footer">
+
+                                                                <div></div>
+
+                                                            </div>
+                                                        </div>
+                                }
+                            }
+                            
+                            @{ 
+                                List<SDE_FIC.Models.Aluno> _lAlunosErro = ViewBag.listarAlunosErro;
+
+                                if (_lAlunosErro.Count() > 0)
+                                {
+                                                        <div class="box box-solid box-danger">
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">Lista dos Alunos NÃO Importados</h3>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <table cellpading="2" cellspacing="2" border="1" class="table table-bordered table-hover">
+                                                                    <tr>
+                                                                        <th>Data</th>
+                                                                        <th>Nome</th>
+                                                                        <th>Telefone Res</th>
+                                                                        <th>Telefone Cel</th>
+                                                                        <th>Email</th>
+                                                                        <th>Obs</th>
+                                                                        <th>CPF</th>
+
+                                                                    </tr>
+                                                                    @foreach (var aluno in _lAlunosErro)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@aluno.DataCadastro</td>
+                                                                            <td>@aluno.Nome</td>
+                                                                            <td>@aluno.TelefoneResidencial</td>
+                                                                            <td>@aluno.TelefoneCelular</td>
+                                                                            <td>@aluno.Email</td>
+                                                                            <td>@aluno.Observacao</td>
+                                                                            <td>@aluno.CPF</td>
+                                                                        </tr>
+
+                                                                    }
+
+                                                                </table>
+
+                                                            </div>
+                                                            <div class="box-footer">
+
+                                                                <div></div>
+
+                                                            </div>
+                                                        </div>
+                                }
+                            }
+                            
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+                <!-- Alerta Carregando Modal-->
+                <div class="modal modal-info fade" id="modal-carregando">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Importando Alunos</h4>
+
+                                <div class="pull-right">
+                                    <a href="#" class="link-black" data-dismiss="modal" aria-label="Close" onclick="window.close()">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="modal-body" style="text-align:center;">
+                                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br />Carregando Diário..
+                                <span class="sr-only">Importando Matrículas para a Turma! <br />Aguarde...</span>
+
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

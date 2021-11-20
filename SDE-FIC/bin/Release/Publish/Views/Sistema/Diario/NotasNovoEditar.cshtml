@@ -1,0 +1,130 @@
+﻿@model SDE_FIC.Models.Notas
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Editar Nota do @{@ViewBag.Title}
+        <small>Controle de Notas/Avaliações</small>
+    </h1>
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+
+
+                    <div class="col-md-6">
+
+                        @using (Html.BeginForm())
+                        {
+                            <div class="box box-solid box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">
+                                        Aluno:                                         @Html.DisplayFor(model => Model.Matricula.Aluno.Nome)
+                                    </h3>
+                                </div>
+                                <div class="box-body">
+
+
+
+                                    <div class="form-group">
+                                        <label>Unidade Curricular</label><br />
+                                        @Html.DropDownListFor(model => Model.UnidadeCurricular.IdUnidadeCurricular, ViewBag.unidadecurricular_idunidadecurricular as SelectList,
+                              " ", new { @Value = Model.UnidadeCurricular.IdUnidadeCurricular, @class = "form-control", @Disabled = true })
+                                    </div>
+                                    <br />
+
+                                    @Html.HiddenFor(model => Model.IdNotas)
+                                    @Html.HiddenFor(model => Model.Matricula.IdMatricula)
+                                    @Html.HiddenFor(model => Model.UnidadeCurricular.IdUnidadeCurricular)
+
+                                    <div class="form-group">
+                                        <label>Nota</label><br />
+                                        @Html.TextBoxFor(model => Model.Nota, new { @class = "form-control" })
+
+                                    </div>
+
+
+
+
+
+                                </div>
+                                <div class="box-footer">
+                                    <button class="btn btn-success" type="submit">Salvar</button>
+                                    
+
+                                </div>
+                                
+                            </div>
+                        }
+                        </div>
+
+
+
+                    
+
+
+                </div>
+
+                        <div class="box-footer clearfix">
+                            <div class="alert alert-success">
+                                <small><b>Obs:</b> Notas devem possuir valores de 0 a 100.       </small>
+                            </div>
+                        </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+

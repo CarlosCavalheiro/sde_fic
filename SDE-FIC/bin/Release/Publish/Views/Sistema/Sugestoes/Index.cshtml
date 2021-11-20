@@ -1,0 +1,142 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Sugestoes>
+@using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Sugestões";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}
+        <small>Lista de Sugestões realizadas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-3">
+                                <a href="~/Sugestoes/Create" class="btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Nova Sugestão</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+                @if (Model != null)
+                {
+                    <div class="box-body table-responsive">
+
+                        <table class="table table-hover dataTable dataTables_sizing">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tipo
+                                    </th>
+                                    <th>
+                                        Titulo
+                                    </th>
+                                    <th>
+                                        Descrição
+                                    </th>
+                                    <th style="text-align:center;">
+                                        Usuário
+                                    </th>
+                                    <th style="text-align:center;">
+                                        Status
+                                    </th>
+                                    @if (Session["LogedUserPerfil"].ToString() == "coordenador")
+                                    {
+                                        <th style="text-align:center;">Ação</th>
+                                    }
+                                   </tr>
+
+                            </thead>
+                            @foreach (var item in Model.OrderBy(x => x.Status))
+                                {
+
+                            <tr>
+                                <td >
+                                    <small>
+                                        @Html.DisplayFor(modelItem => item.Tipo)
+                                    </small>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Titulo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao)
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.DisplayFor(modelItem => item.Usuario.Username)
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+
+                                @if (Session["LogedUserPerfil"].ToString() == "coordenador")
+                                {
+                                <td style="text-align:center; width: 100px;">
+                                    <a href="@Url.Action("Edit", "Sugestoes", new { id = item.IdSugestao })"><img src="~/Content/img/editar.png" alt="Editar" /></a>                                    
+                                    <a href="#" type="button" data-toggle="modal" data-target="#modal_danger_@item.IdSugestao"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+
+                                    <!--MODAL PARA EXCLUSÃO-->
+                                    <div class="modal modal-danger fade" id="modal_danger_@item.IdSugestao" style="display: none;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+                                                    <h4 class="modal-title">Cuidado</h4>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>Tem certeza de que deseja excluir a Sugestão cadastrada?</p>
+                                                    <p>Titulo: @item.Titulo</p>
+                                                    <p>Descrição: @item.Descricao</p>
+                                                    
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                                    <!--<button type="button" class="btn btn-outline">Sim</button>-->
+                                                    <a href="@Url.Action("Delete", "Sugestoes", new { id = item.IdSugestao })" class="btn btn-outline">Sim</a>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                </td>
+                                }
+                                            
+                            </tr>
+
+
+                                
+                            }
+
+                        </table>
+
+                        <div class="box-footer clearfix">
+                            <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterio = ViewBag.strCriterio }))
+                        </div>
+                    </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>

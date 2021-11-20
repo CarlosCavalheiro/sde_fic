@@ -1,0 +1,147 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Funcionario>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Funcionário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+
+}
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Lista de funcinário cadastrados</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a href="~/Funcionario/Create" class="btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Novo Funcionário</a>
+                                </div>
+                                <!--Buscar Aluno-->
+                                <div class="col-sm-5">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <div class="input-group input-group-sm" style="width: 250px;">
+                                            @Html.TextBox("strCriterio", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Funcionário..." })
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-info btn-flat" style="height: 35px;"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+                @if (Model != null)
+                {
+                    <div class="box-body table-responsive">
+
+                        <table class="table table-hover dataTable dataTables_sizing">
+                            <thead>
+                                <tr>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                        Nome Completo
+                                    </th>
+                                    <th>
+                                        Perfil
+                                    </th>
+                                    <th>
+                                        Usuário
+                                    </th>
+                                    <th>
+                                        E-mail
+                                    </th>
+                                    <th style="text-align:center;">Ação</th>
+                                </tr>
+
+                            </thead>
+                            @{ int i = Model.FirstItemOnPage - 1;
+
+                                foreach (var item in Model.OrderBy(x => x.NomeCompleto))
+                                {
+
+                                    <tr>
+                                        <td>@(i = (i + 1)).</td>
+                                        <td>
+                                            @item.NomeCompleto.ToUpper()
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Usuario.Perfil)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Usuario.Username)
+                                        </td>
+                                        <td>
+                                            @item.Email.ToLower()
+                                        </td>
+                                        <td style="text-align:center; width: 100px;">
+                                            <a href="@Url.Action("Edit", "Funcionario", new { id = item.IdFuncionario })"><img src="~/Content/img/editar.png" alt="Editar" /></a>
+                                            <a href="#" type="button" data-toggle="modal" data-target="#modal_danger_@item.IdFuncionario"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+
+                                            <!--MODAL PARA EXCLUSÃO-->
+                                            <div class="modal modal-danger fade" id="modal_danger_@item.IdFuncionario" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">×</span>
+                                                            </button>
+                                                            <h4 class="modal-title">Cuidado</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <p>Tem certeza de que deseja excluir o funcionário cadastrado?</p>
+                                                            <p>Nome: @item.NomeCompleto</p>
+                                                            <p>E-mail: @item.Email</p>
+                                                            
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                                            <!--<button type="button" class="btn btn-outline">Sim</button>-->
+                                                            <a href="@Url.Action("Delete", "Funcionario", new { id = item.IdFuncionario })" class="btn btn-outline">Sim</a>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+
+                        </table>
+
+                        <div class="box-footer clearfix">
+                            <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterio = ViewBag.strCriterio }))
+                        </div>
+                    </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>

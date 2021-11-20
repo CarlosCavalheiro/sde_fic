@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = Session["LogedUserPerfil"];
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+<div style="text-align:center;">
+    <legend>
+        <table style="width: 100%;">
+            <tr><td>
+                <h3 style="text-align:left;">Área do @Session["LogedUserPerfil"].ToString()</h3>
+                <h5 style="text-align: left;">@ViewBag.Saudacao - @ViewBag.Data</h5></td>
+                <td>                              
+                </td>
+                <td style="vertical-align: bottom; text-align:right">
+                
+                </td>
+
+            </tr></table></legend>
+    
+
+</div>
+<div style="height:100%;">
+@*    <div style="width: 200px; height: 200px; background-color: lightyellow; float: left; border: 1px solid gray; padding: 5px; margin: 15px;">
+        <b>Avisos</b><br /><hr />
+        Entrega de lista de material didático deve ser realizada por email até o dia 01/03/2015
+    </div>
+    <div style="width: 200px; height: 200px; background-color: lightyellow; float: left; border: 1px solid gray; padding: 5px; margin: 15px;">
+        <b>Reuniao</b><br /><hr />
+        Em 07/02 haverá reunião com todos os professores do FIC.
+        A participação é obrigatória para compensação de horas.
+    </div>*@
+    <div style="width: 100%; background-color: #b3efda; border: 1px solid gray; padding: 5px; margin: 0px; border-radius: 3px;">
+        <b>Informações Úteis</b><br>
+        <b>Cadastro de Novos Usuários, Alunos, Cursos, Unidades Curriculares, Evasão ou Transferência</b><br>
+        <p style="text-align:justify;">
+            Será realizado pela secretária.<br />
+            Atualmente as pessoas responsáveis são: <br />Rodolfo (rodolfo.bazzuco@sp.senai.br) e Acácio (acacio.neto@sp.senai.br). <br />
+            <br />
+        <b>Cadastro de Frequência, Lançamento de Notas e Impressão de Fechamento</b><br>
+        <p style="text-align:justify;">
+            São realizados por cada docente que possui acesso ao sistema;<br />
+            Preferencialmente as frequencias devem ser lançados no dia da aula;
+            <br />
+            <br />
+        <b>Lançamento de Notas</b><br>
+        <p style="text-align:justify;">
+            As notas devem ser informadas de 0 a 100 (números inteiros) e
+            somente as médias por módulo. 
+            <br />
+            Não adicionar mais de uma nota por módulo, pois a segunda nota não entra na média.
+            A média se atualiza de acordo com o lançamento das notas.
+            <br />
+            <br />
+        
+        <b>Novas Funções/Correções</b><br>
+        <p style="text-align:justify;">
+            > 11/12/2017 - Implementado cadastro de aproveitamentos no diário da turma;
+            <br />
+            > 11/12/2017 - Implementado o cadastro da Sigla da Unidade Curricular, alterado tempo de seção para 60 min.;
+            <br />
+            > 04/12/2017 - Permitir o usuário Coordenador realize lançamentos/correções nos diários; Sugestão: Coord. Júlio Cesar
+            <br />
+            > 04/10/2017 - Conteudo organizado por data mais recente; Sugestão: Prof. Regiano
+            <br />
+            > 04/10/2017 - Realizado inclusão de função de Transferência;
+            <br />
+            > 09/10/2017 - Realizado inclusão de estatus de AP (Aproveitamento de Estudos) no lançamento da Frequência;
+            <br /> 
+            > 11/10/2017 - Corrígido Impressão de Relatório: data de conteúdo diferente de data de frequencia; Sugestão: Prof. Luciano
+            <br />
+            
+    </div>
+    
+@*    <div style="width: 60%; background-color: #f5ffa6; float: left; border: 1px solid gray; padding: 5px; margin-left: 5px; margin-top: 5px; border-radius: 3px;">
+        <b>Calendário de Turmas 2015</b><br>
+        <p style="text-align:justify;">
+            Para fazer o donwload do Calendário 2015 
+            
+            @Html.ActionLink("Clique Aqui","BaixarCalendario2015")
+            <br />
+            Encontre seu curso na guia.</p>   
+    </div>*@
+
+    <div style="width: 100% ;background-color: #d0f89c; border: 1px solid gray; padding: 5px; margin: 0px; border-radius: 3px;">
+        <b>Aviso</b><br>
+        <p style="text-align:justify;">Em 02/07/2015 foi implementado a utilização do SDE - Sistema de Diário Escolar, com o objetivo de realizar o controle academico
+        de frequencia e notas dos alunos do FIC. <br />
+        O sistema está passando por melhorias constantes. Caso encontre algum erro, dúvida ou sugestão, clique em
+        @Html.ActionLink("Sugestões", "Index", "Sugestoes").
+        </p>
+       
+    </div>
+        <div style="clear: both;"></div>
+</div>
+
+

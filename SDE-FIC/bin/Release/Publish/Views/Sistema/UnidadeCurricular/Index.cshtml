@@ -1,0 +1,171 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.UnidadeCurricular>
+@using PagedList.Mvc
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Unidade Curricular";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}
+        <small>Lista de Unidades Curriculares cadastradas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <a href="~/UnidadeCurricular/Create" class="btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Nova Unidade Curricular</a>
+                                </div>
+                                <!--Buscar Aluno-->
+                                <div class="col-sm-5">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <div class="input-group input-group-sm">
+                                            @Html.TextBox("strCriterioCurso", null, new { @class = "form-control pull-right", @style = "height: 35px;", @placeholder = "Curso..." })
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-info btn-flat" style="height: 35px;"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+                @if (Model != null)
+                {
+                    <div class="box-body table-responsive">
+
+                        <table class="table table-hover dataTable dataTables_sizing">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                        Nome do Curso
+                                    </th>
+                                    <th>
+                                        Unidade Curricular
+                                    </th>
+                                    <th>
+                                        Sigla
+                                    </th>
+                                    <th>
+                                        Carga Horária (h)
+                                    </th>
+                                    <th style="text-align:center;">Ação</th>
+                                </tr>
+
+                            </thead>
+                            @{ int i = Model.FirstItemOnPage - 1;
+                               string Teste = "Curso";
+
+                                foreach (var item in Model.OrderBy(x => x.Curso.CursoNome))
+                                {
+
+                            <tr>
+                                <td>
+                                    @if (item.Curso.CursoNome == Teste)
+                                    {
+                                        <br />
+                                    }
+                                    else
+                                    {
+                                        Write((i = (i + 1)) + ".");                                        
+                                    }           
+                                    
+                                </td>
+                                <td>
+
+                                    @if (item.Curso.CursoNome == Teste)
+                                    {
+                                        <br />
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.Curso.CursoNome)
+                                    }
+                                    @{Teste = item.Curso.CursoNome;}
+
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao)
+                                </td>
+                                <td style="text-align:center;">
+                                    @item.Sigla.ToUpper()
+
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.DisplayFor(modelItem => item.CargaHoraria)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "UnidadeCurricular", new { id = item.IdUnidadeCurricular })"><img src="~/Content/img/editar.png" alt="Editar" /></a>
+                                    <a href="#" type="button" data-toggle="modal" data-target="#modal_danger_@item.IdUnidadeCurricular"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+
+                                    <!--MODAL PARA EXCLUSÃO-->
+
+                                    <div class="modal modal-danger fade in"id="modal_danger_@item.IdUnidadeCurricular" style="display: none; padding-right: 17px;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Cuidado</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>Tem certeza de que deseja excluir a Unidade Curricular cadastrada?</p>
+                                                    <p>Nome: @item.Descricao</p>
+                                                    <p>Carga Horária: @item.CargaHoraria h</p>
+
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                                    <!--<button type="button" class="btn btn-outline">Sim</button>-->
+                                                    <a href="@Url.Action("Delete", "UnidadeCurricular", new { id = item.IdUnidadeCurricular })" class="btn btn-outline">Sim</a>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+
+
+                                </td>
+                            </tr>
+
+                                }
+                            }
+
+                        </table>
+
+                        <div class="box-footer clearfix">
+                            <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterio = ViewBag.strCriterio }))
+                        </div>
+                    </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>

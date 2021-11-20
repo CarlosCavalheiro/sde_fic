@@ -1,0 +1,308 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SDEFIC | @ViewBag.Title</title>
+
+    <link rel="shortcut icon" href="~/img/ico_dq.png">
+    <link rel="icon" href="~/Content/img/sde_topo.png" sizes="120x120">
+
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/fa/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/ionic/ionicons.min.css">
+
+    <link href="~/admin-lte/css/AdminLTE.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/admin-lte/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="~/plugins/iCheck/flat/blue.css">
+    <link rel="stylesheet" href="~/plugins/morris/morris.css">
+    <link rel="stylesheet" href="~/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <link rel="stylesheet" href="~/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="bower_components/morris.js/morris.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style type="text/css">
+        .jqstooltip {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            visibility: hidden;
+            background: rgb(0, 0, 0) transparent;
+            background-color: rgba(0,0,0,0.6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+            white-space: nowrap;
+            padding: 5px;
+            border: 1px solid white;
+            box-sizing: content-box;
+            z-index: 10000;
+        }
+
+        .jqsfield {
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+        }
+    </style>
+    <script src="https://www.googletagservices.com/activeview/js/current/osd.js?cb=%2Fr20100101"></script>
+    <script src="https://partner.googleadservices.com/gampad/cookie.js?domain=adminlte.io&amp;callback=_gfp_s_&amp;client=ca-pub-6272584992356792&amp;cookie=ID%3Dc37c412a5ee01a95%3AT%3D1590455709%3AS%3DALNI_MY9WFqZnpP6o7OFFV59gbgPV2ivaQ&amp;crv=1"></script>
+    <script src="https://pagead2.googlesyndication.com/pagead/js/r20200608/r20190131/show_ads_impl_fy2019.js" id="google_shimpl"></script>
+    <link rel="preload" href="https://adservice.google.com.br/adsid/integrator.js?domain=adminlte.io" as="script">
+    <script type="text/javascript" src="https://adservice.google.com.br/adsid/integrator.js?domain=adminlte.io"></script>
+    <link rel="preload" href="https://adservice.google.com/adsid/integrator.js?domain=adminlte.io" as="script">
+    <script type="text/javascript" src="https://adservice.google.com/adsid/integrator.js?domain=adminlte.io"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+</head>
+
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+<body class="skin-blue sidebar-mini" style="height: auto; min-height:100%;">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="@Url.Action("Index", "Sistema")" class="logo">
+                <span class="logo-mini"><b>S</b>DE</span>
+                <span class="logo-lg"><b>SDE</b>FIC</span>
+            </a>
+
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+                        <li class="dropdown user user-menu">
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="../../Content/img/user.png" class="user-image" alt="User Image">
+                                <span class="hidden-xs"> @Session["LogedUserNomeCompleto"].ToString()</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header" style="height:100px">
+                                    <p>
+                                        @Session["LogedUserNomeCompleto"].ToString()
+                                        <small>Usuário: @Session["LogedUserName"].ToString()</small>
+                                        <small>Perfil: @Session["LogedUserPerfil"].ToString()</small>
+                                    </p>
+                                </li>
+                                <div class="pull-left">
+                                    @Html.ActionLink("Configurações", "Edit", "Usuario", new { id = Session["LogedUserId"].ToString() }, new { @class = "btn btn-default btn-flat" })
+                                </div>
+                                <div class="pull-right">
+                                    @Html.ActionLink("Sair", "Logout", "Home", null, new { @class = "btn btn-default btn-flat" })
+                                </div>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <aside class="main-sidebar">
+
+            <section class="sidebar">
+
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="../../Content/img/user.png" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info col-1">
+                        <p>@Session["LogedUserName"].ToString()</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="header">MENU DE NAVEGAÇÃO</li>
+                    <li class="active">
+                        <a href="@Url.Action("Index", "Sistema")">
+                            <i class="fa fa-dashboard"></i> <span>Painel de Controle</span>
+                        </a>
+                    </li>
+                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-server"></i> <span>Cadastros</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                <li><a href="@Url.Action("Index", "Aluno")"><i class="fa fa-users"></i> Alunos</a></li>
+                                <li><a href="@Url.Action("Index", "Curso")"><i class="fa fa-book"></i> Cursos</a></li>
+                                <li><a href="@Url.Action("Index", "UnidadeCurricular")"><i class="fa fa-ellipsis-h"></i> Unidades Curriculares</a></li>
+                                <li><a href="@Url.Action("Index", "Turma")"><i class="fa fa-asterisk"></i> Turmas</a></li>
+                                <li><a href="@Url.Action("Index", "Matricula")"><i class="fa fa-spinner    "></i> Matriculas</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Session["LogedUserPerfil"].ToString() == "professor")
+                    {
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-server"></i> <span>Turmas</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index", "Turma")"><i class="fa fa-asterisk"></i> Minhas Turmas</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-newspaper-o"></i> <span>Diários</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+
+                            <li>
+                                <a href="@Url.Action("Index", "Diario", new {strCriterioStatus = 2})">
+                                    <i class="fa fa-check-circle-o"></i>
+                                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                    {
+                                        <span>Todos os Diários</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Meus Diários</span>
+                                    }
+                                </a>
+                            </li>
+                            @*<li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-language"></i> Aproveitamentos</a></li>*@
+                            @*<li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-archive"></i> Fechamentos</a></li>*@
+
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-sellsy"></i> <span>Segurança</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @if (Session["LogedUserPerfil"].ToString() == "coordenador")
+                            {
+                                <li><a href="@Url.Action("Index", "Usuario")"><i class="fa fa-cogs"></i> Usuários</a></li>
+                                <li><a href="@Url.Action("Index", "Funcionario")"><i class="fa fa-bank"></i> Funcionários</a></li>
+                            }
+                            <li>
+                            <li><a href="@Url.Action("Edit", "Usuario", new { id = Session["LogedUserId"].ToString() })"><i class="fa fa-user-secret"></i> Configurações</a></li>
+
+                        </ul>
+                    </li>
+
+                    @*<li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-gear"></i> <span>Ferramentas</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Importar", "Ferramentas")"><i class="fa fa-upload"></i> Importar Alunos</a></li>
+                                <li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-language"></i> Aproveitamentos</a></li>
+                                <li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-archive"></i> Fechamentos</a></li>
+
+                            </ul>
+                        </li>*@
+                    @*<li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-archive"></i> <span>Relatórios</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-sticky-note-o"></i> Frequências</a></li>
+                                <li><a href="@Url.Action("Index", "Diario")"><i class="fa fa-sticky-note-o"></i> Alunos Faltosos</a></li>
+
+                            </ul>
+                        </li>*@
+
+
+                    <li><a href="@Url.Action("Index", "Sugestoes")"><i class="fa fa-circle-o text-red"></i> <span>Sugestões</span></a></li>
+
+                </ul>
+            </section>
+
+        </aside>
+
+        <div class="content-wrapper">
+            @{ Html.RenderPartial("_Alerts"); }
+            @RenderBody()
+        </div>
+
+
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Versão</b> 2.0
+            </div>
+            <small>&copy;2015 - 2020 - Desenvolvido por <a href="mailto:vouler@hotmail.com">Carlos Alexandre Cavalheiro</a></small>
+        </footer>
+    </div>
+    <script src="../../plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="../../scripts/jquery-ui.min.js"></script>
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <script src="../../scripts/bootstrap.min.js"></script>
+    <script src="../../scripts/raphael-min.js"></script>
+    <script src="../../plugins/morris/morris.min.js"></script>
+    <script src="../../plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="../../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="../../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="../../plugins/knob/jquery.knob.js"></script>
+    <script src="../../scripts/moment.min.js"></script>
+    <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="../../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="../../plugins/fastclick/fastclick.min.js"></script>
+    <script src="../../scripts/app.min.js"></script>
+    <script src="../../scripts/pages/dashboard.js"></script>
+    <script src="../../scripts/demo.js"></script>
+    <script src="~/admin-lte/js/adminlte.js"></script>
+    <script src="~/admin-lte/js/pages/dashboard.js"></script>
+
+</body>
+</html>

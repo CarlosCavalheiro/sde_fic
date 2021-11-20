@@ -1,0 +1,244 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Diario>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Diario";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    var x = 0;
+}
+<section class="content-header">
+    <h1>
+        Frequências do @{@ViewBag.Title}
+        <small>Controle de Frequências</small>
+    </h1>
+</section>
+
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Registro de Frequência</h3>
+
+                            <div class="box-tools right">
+                                <div class="input-group input-group-sm hidden-xs">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <div class="input-group input-group-sm">
+                                            @Html.DropDownList("strCriterio", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "TODOS", new { @class = "form-control", @style = "height: 30px; border-radius: 0px;" })
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-info btn-flat" style="height: 30px;"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="box-body table-responsive no-padding">
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Alunos
+                                            </th>
+
+                                            @foreach (var item in Model)
+                                            {
+                                                <th style="width: 45px; text-align: center; vertical-align:middle;">
+
+                                                    @if (Session["LogedUserPerfil"].ToString() == "professor" || Session["LogedUserPerfil"].ToString() == "coordenador")
+                                                    {
+                                                        <strong>
+                                                            <a href="@Url.Action("LancamentoEditar", "Diario", new { id = item.IdTurma, idDiario = item.IdDiario, strCriterio = ViewBag.strCriterio, strCriterioAnterior = ViewBag.strCriterioAnterior })" alt="Editar Frequência">
+                                                                @{
+
+                                                                    Write(item.Data.Day);
+                                                                    Write("/");
+                                                                    Write(item.Data.Month);
+                                                                }
+                                                            </a>
+                                                        </strong>
+                                                    }
+                                                    else
+                                                    {
+                                                        Write(item.Data.Day);
+                                                        Write("/");
+                                                        Write(item.Data.Month);
+                                                    }
+                                                </th>
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+
+                                            List<SDE_FIC.Models.Matricula> lMatriculas = ViewBag.ListaMatriculas;
+
+                                            int nAluno = 0;
+
+
+
+                                            for (int i = 0; i < lMatriculas.Count(); i++)
+                                            {
+                                                int nVerifica = 0;
+                                                nAluno = nAluno + 1;
+                                                <tr>
+                                                    <td style="font-size: small;">
+                                                        @nAluno) @lMatriculas[i].Aluno.Nome.ToUpper()
+                                                        @if (lMatriculas[i].Situacao == "Evadido")
+                                                        {
+                                                            Write("*" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                        }
+                                                        @if (lMatriculas[i].Situacao == "Transferido (S)")
+                                                        {
+                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                        }
+                                                        @if (lMatriculas[i].Situacao == "Transferido (E)")
+                                                        {
+                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                        }
+
+                                                        @{
+                                                            int TotalAproveitamentos = lMatriculas[i].listaAproveitamentos.Count();
+                                                            string TxtAproveitamento = "";
+                                                            if (TotalAproveitamentos != 0)
+                                                            {
+                                                                for (int j = 0; j < TotalAproveitamentos; j++)
+                                                                {
+                                                                    TxtAproveitamento = TxtAproveitamento + "(" + lMatriculas[i].listaAproveitamentos[j].UnidadeCurricular.Sigla + ")";
+                                                                };
+                                                                Write("**" + TxtAproveitamento);
+                                                            }
+                                                        }
+                                                    </td>
+                                                    @{
+                                                        foreach (var item in Model)
+                                                        {
+                                                            for (int f = 0; f < item.Frequencias.Count(); f++)
+                                                            {
+                                                                if (lMatriculas[i].IdMatricula == item.Frequencias[f].Matricula.IdMatricula)
+                                                                {
+
+                                                                    <td style="text-align:center; font-size: x-small;">
+
+
+                                                                        @if (item.Frequencias[f].Presenca == "P")
+                                                                        {
+                                                                            <b style="color:dodgerblue;">P</b>
+                                                                        }
+                                                                        else if (item.Frequencias[f].Presenca == "A")
+                                                                        {
+                                                                            <b style="color:Red;">A</b>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca );}</b>
+                                                                        }
+
+                                                                         @*@if (item.Frequencias[f].Presenca == "P")
+                                                                        {
+                                                                            <b style="color:blue;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
+                                                                        }
+                                                                        else if (item.Frequencias[f].Presenca == "A")
+                                                                        {
+                                                                            <b style="color:Red;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
+                                                                        }*@
+
+                                                                    </td>
+
+                                                                    nVerifica = 2;
+                                                                }
+
+                                                            }
+                                                            if (nVerifica == 0)
+                                                            {
+                                                                <td>&nbsp;<i class="fa fa-plus-circle"></i></td>
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <div class="box-footer">
+                            <div style="font-size: 8pt; width: 100%; text-align: right;">
+                                @Html.PagedListPager(Model, page => Url.Action("Frequencia", new { pagina = page, strCriterio = ViewBag.strCriterio, strCriterioAnterior = ViewBag.strCriterioAnterior }))
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+

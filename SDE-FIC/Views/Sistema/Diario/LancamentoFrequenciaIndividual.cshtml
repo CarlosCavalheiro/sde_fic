@@ -1,0 +1,155 @@
+﻿@using SDE_FIC;
+@model SDE_FIC.Models.Frequencia
+<script src="~/Content/js/bootstrap.js"></script>
+
+@{
+    ViewBag.Title = "Lançamento Individual";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+<section class="content-header">
+    <h1>
+        @{@ViewBag.Title}
+        <small>Controle de Frequências, Conteúdos e Notas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            @*<div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = Model.Turma.Idturma })">@Model.Turma.Descricao</a> - @Model.Turma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>*@
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close" data-toggle="modal" data-target="#modal-carregando"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @*@{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}*@
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+
+                @using (Html.BeginForm())
+                {
+
+                    @*@Html.ValidationSummary(true)
+                    int idturma = Model.Turma.Idturma;
+                    @Html.Hidden("IdTurma", idturma)*@
+
+                    <div class="box-body">
+                        <div class="col-md-6">
+                            <div class="box box-solid box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Lançamento de Frequência</h3>
+                                </div>
+                                <div class="box-body">
+
+
+                                    @if (ViewBag.datadiario_iddiario != null)
+                                    {
+                                        using (Html.BeginForm())
+                                        {
+
+                                            @Html.ValidationSummary(true);
+                                            int idturma = ViewBag.turma_idturma;
+                                            @Html.Hidden("IdTurma", idturma);
+
+                                            <div style="width: 330px; float: left;">
+                                                <b>Escolha o Aluno</b> <small style="color:red;">*</small>
+                                                <br />
+                                                @Html.DropDownListFor(m => Model.Diario.IdDiario, ViewBag.matricula_idmatriculas as SelectList, "")
+                                                <br />
+                                                <b>Escolha a Data de Lançamento</b> <small style="color:red;">*</small>
+                                                <br />
+                                                @Html.DropDownListFor(m => Model.Diario.IdDiario, ViewBag.datadiario_iddiario as SelectList, "")
+                                                <br />
+                                                <b>Presença </b><small style="color:red;">*</small>
+                                                <br />
+
+                                                @Html.DropDownListFor(m => Model.Presenca,
+                                                     new SelectList(
+                                                     new List<Object>{
+                                                    new { value =  "P" , text =  "P" },
+                                                    new { value =  "A" , text =  "A" },
+                                                    new { value =  "TE" , text =  "TE"},
+                                                    new { value =  "TS" , text =  "TS"},
+                                                         }, "value", "text", "hora"), null, new { @class = "Presenca" })
+                                                @*<script>
+                         $('body').on('change', '#Presenca', function () {
+                             if ($(this).val() == "P") { valorx = '@Model.HoraAula.ToString("0.0")'; } else { valorx = '0,0'; }
+                                                                                $('#Presenca').val(valorx);
+                                                                            });
+                                                                             $('#Presenca').trigger('change');
+                    </script>*@
+
+                                                <br />
+
+                                                <b>Hora </b><small style="color:red;">*</small>
+                                                <br />
+                                                <!--Html.TextBoxFor(m => Model.HoraAula, new {Value = Model.HoraAula.ToString("0.0"), style = "width: 40px; height: 20px; padding: 2px 2px; margin-bottom: 0px; font-size: 10px; line-height: 20px;"})-->
+                                                @*@Html.TextBoxFor(m => Model.HoraAula, new { Value = Model.HoraAula.ToString("0.0"), style = "width: 40px; height: 20px; padding: 2px 2px; margin-bottom: 0px; font-size: 10px; line-height: 20px;" })*@
+                                            </div>
+                                            <div style="width: 100%;">
+                                                <button class="btn btn-sucsess " type="submit">Salvar</button>
+                                            </div>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <div class="info-box">NENHUMA FREQUENCIA FOI REGISTRADA! <br />Somente poderá ser realizado Lançamento Individual caso já tenha ocorreido algum lançamento para Turma.</div>
+                                    }
+
+
+                                    <br />
+<pre>
+Obs: Clique na Letra do campo presença para alternar.
+
+<b>Sigla    Descrição         Sigla     Descrição</b>
+(P)      Presença          (E)       Evadido 
+(A)      Ausência          (D)       Desistente
+(TE)     Atraso            (TS)      Saída antes do Término  
+(AP)     Aproveitamento    (R)       Reposição de Aula
+</pre>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <input type="submit" value="Salvar" class="btn btn-success" id="btnSubmit" data-toggle="modal" data-target="#modal-carregando" />
+                        @*<a href="~/Diario/Turma/@Model.Turma.Idturma" class="btn btn-default pull-right">Limpar</a>*@
+                    </div>
+
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

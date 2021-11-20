@@ -1,0 +1,128 @@
+﻿
+@{var iTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+<!-- Corpo da Caixa de Ferramentas -->
+@if (ViewBag.Turma != null)
+{
+    <div class="collapse" id="collapseExample">
+
+        <div class="box" style="background-color:#e4e7e9;">
+            <div class="row">
+                <div class="col-md-1">
+                    <a href="@Url.Action("LancamentoNovo", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-plus-circle"></i>&nbsp;Realizar Lançamento</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("Frequencia", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-check"></i>&nbsp;Listar Frequências</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("Conteudo", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-check-square"></i>&nbsp;Listar Conteúdos</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("Notas", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-area-chart"></i>&nbsp;Registro de Notas</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("Resumo", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-yelp"></i>&nbsp;Resumo da Turma</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("GerarPDF", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-file-pdf-o"></i>&nbsp;Relatórios em PDF</div>
+                    </a>
+                </div>
+                <div class="col-md-1">
+                    <a href="@Url.Action("Aproveitamentos", "Diario", new { id = iTurma.Idturma })">
+                        <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-anchor"></i>&nbsp;Editar Aproveitamentos</div>
+                    </a>
+                </div>
+
+            </div>
+            </div>
+        </div>
+}
+else
+{
+        <div class="collapse" id="collapseExample">
+
+            <div class="box" style="background-color:#e4e7e9;">
+                <div class="row">
+                    <div class="col-md-1">
+                        <a href="@Url.Action("LancamentoNovo", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-plus-circle"></i>&nbsp;Realizar Lançamento</div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-1">
+                        <a href="@Url.Action("Frequencia", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-check"></i>&nbsp;Listar Frequências</div>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="@Url.Action("Conteudo", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-check-square"></i>&nbsp;Listar Conteúdos</div>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="@Url.Action("Notas", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-area-chart"></i>&nbsp;Registro de Notas</div>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="@Url.Action("Resumo", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-yelp"></i>&nbsp;Resumo de Turma</div>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="@Url.Action("GerarPDF", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-file-pdf-o"></i>&nbsp;Relatórios em PDF</div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-1">
+                        <a href="@Url.Action("Aproveitamentos", "Diario", new { id = Model.Turma.Idturma })">
+                            <div class="btn btn-app" style="height:auto;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-anchor"></i>&nbsp;Editar Aproveitamentos</div>
+                        </a>
+                    </div>
+
+                </div>
+                
+
+            </div>
+        </div>
+        }
+
+
+        <!-- Alerta Exclusão Modal-->
+        <div class="modal modal-info fade" id="modal-carregando">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Aguarde</h4>
+                        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>*@
+                        <div class="pull-right">
+                            <a href="#" class="link-black" data-dismiss="modal" aria-label="Close" onclick="window.close()">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-body" style="text-align:center;">
+                        <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br />Carregando...
+                        <span class="sr-only">Carregando...</span>
+
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,97 @@
+﻿@model SDE_FIC.Models.Aluno
+
+@{
+    ViewBag.Title = "Aluno";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s    
+        <small>Editar Aluno</small>
+
+    </h1>
+</section>
+<section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="pull-right">
+                    <a href="~/Aluno" class="link-black"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+
+            <div class="box-body">
+                
+
+                @using (Html.BeginForm()) {
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.IdAluno)
+                                    <div class="editor-label">
+                                        <b>Data de Cadastro</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.EditorFor(model => model.DataCadastro, new { @class = "form-control", @type = "date" })
+                                        @Html.ValidationMessageFor(model => model.DataCadastro)
+                                    </div>
+ 
+                                    <div class="editor-label">
+                                        <b>Nome</b><font color="red">*</font>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(model => model.Nome, new { @class = "form-control"})   
+                                        @Html.ValidationMessageFor(model => model.Nome)                     
+                                    </div>
+
+                                      <div class="editor-label">
+                                        <b>C.P.F. (Somente Números)</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(model => model.CPF, new { @class = "form-control"})
+                                        @Html.ValidationMessageFor(model => model.CPF)
+                                    </div>
+
+                                    <div class="editor-label">
+                                        <b>Tel. Celular</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(model => model.TelefoneCelular, new { @class = "form-control", @value = " "})
+                                        @Html.ValidationMessageFor(model => model.TelefoneCelular)
+                                    </div>
+
+                                    <div class="editor-label">
+                                        <b>Tel. Residencial</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(model => model.TelefoneResidencial, new { @class = "form-control", @value = " "})
+                                        @Html.ValidationMessageFor(model => model.TelefoneResidencial)
+                                    </div>
+
+                                   <div class="editor-label">
+                                        <b>E-mail:</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @value = " "})
+                                        @Html.ValidationMessageFor(model => model.Email)
+                                    </div>
+
+                                    <div class="editor-label">
+                                        <b>Observação</b>
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextAreaFor(model => model.Observacao, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Observacao)
+                                    </div>
+
+                                <div class="box-footer">
+                                    <input type="submit" value="Salvar" class="btn btn-success" id="btnSubmit" />                      
+                                    <a href="/Aluno/Create" class="btn btn-default pull-right">Limpar</a>
+                                </div> 
+
+                        }
+
+            </div>
+                      
+                </div>                  
+
+</section>

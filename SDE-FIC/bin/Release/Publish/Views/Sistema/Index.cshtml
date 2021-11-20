@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = " Painel de Controle" + " | " +  Session["LogedUserPerfil"];
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="row">
+        <div class="col-12">
+            <ol class="breadcrumb">
+                <li><i class="fa fa-dashboard"></i> Painel de Controle</li>
+            </ol>
+        </div>
+    </div>
+   
+    <!--
+    
+        -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+
+    <div class="col-sm-3">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>@ViewBag.Turma</h3>
+
+                <p>Turmas Cadastradas</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-gear-b"></i>
+            </div>
+            <a href="@Url.Action("Index", "Turma", new { strCriterioStatus = 2 })" class="small-box-footer">Ver todos <i class="fa fa-arRows-circle-right"></i></a>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+
+        <div class="small-box bg-green">
+            <div class="inner">
+                <h3>@ViewBag.Usuario</h3>
+
+                <p>Usuários Cadastrados</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person-add"></i>
+            </div>
+            @if (Session["LogedUserPerfil"].ToString() != "professor")
+            {
+                <a href="@Url.Action("Index", "Usuario")" class="small-box-footer">Ver todos <i class="fa fa-arRows-circle-right"></i></a>
+            }
+            else
+            {
+                <a href="#" class="small-box-footer">&nbsp;Usuários Cadastrados</a>
+            }
+
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+
+        <div class="small-box bg-yellow">
+            <div class="inner">
+                <h3>@ViewBag.DiariosAtivo</h3>
+
+                <p>Diários Ativos</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="@Url.Action("Index", "Diario", new {strCriterioStatus = 1})" class="small-box-footer">Ver Todos <i class="fa fa-arRows-circle-right"></i></a>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>@ViewBag.DiariosFinalizado</h3>
+
+                    <p>Diários Finalizados</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-alert-circled"></i>
+                </div>
+                <a href="@Url.Action("Index", "Diario", new {strCriterioStatus = 0})" class="small-box-footer">Ver Todos <i class="fa fa-arRows-circle-right"></i></a>
+            </div>
+        </div>
+     
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <i class="fa fa-bullhorn"></i>
+
+              <h3 class="box-title">Informações</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="tab-pane active" id="tab_1-1">
+                <b>Novas Funções</b>
+
+                <p style="text-align:justify;">
+                    <ul>
+                        <li>11/06/2020 - Novo Layout Responsivo, que permite melhor uso com dispositivos Tablet e Mobile;</li>
+
+                        <li>20/07/2018 - Implementado Função de Filtro de Turmas Ativas e Concluídas;</li>
+
+                        <li>20/07/2018 - Implementado Função de Fechamento de Turma (Somente a Secretaria poderá Fechar e Reabrir a Turma);</li>
+
+                        <li>20/07/2018 - Implementado Importação de Alunos para Turma;</li>
+
+                        <li>20/07/2018 - Implementado Tipo de Lançamento de Reposição no diário "R";</li>
+
+                        <li>20/07/2018 - Implementado Lançamento Individual de Frequência;</li>
+
+                        <li>11/12/2017 - Implementado cadastro de aproveitamentos no diário da turma;</li>
+
+                        <li>11/12/2017 - Implementado o cadastro da Sigla da Unidade Curricular, alterado tempo de seção para 60 min.;</li>
+
+                        <li>04/12/2017 - Permitir o usuário Coordenador realize lançamentos/correções nos diários; Sugestão: Coord. Júlio Cesar</li>
+
+                        <li>04/10/2017 - Conteudo organizado por data mais recente; Sugestão: Prof. Regiano</li>
+
+                        <li>04/10/2017 - Realizado inclusão de função de Transferência;</li>
+
+                        <li>09/10/2017 - Realizado inclusão de estatus de AP (Aproveitamento de Estudos) no lançamento da Frequência;</li>
+
+                        <li>11/10/2017 - Corrígido Impressão de Relatório: data de conteúdo diferente de data de frequencia; Sugestão: Prof. Luciano</li>
+
+                    </ul>
+                </p>
+                  
+                <b>Informações Úteis</b>
+                  <ul>
+                    <li>Cadastro de Novos Usuários, Alunos, Cursos, Unidades Curriculares, Evasão ou Transferência, são realizados pela secretária.
+                    Atualmente as pessoas responsáveis são: <br />Rodolfo (rodolfo.bazzuco@sp.senai.br) e Daiane (asact792@sp.senai.br).
+                    </li>
+                    <li>Cadastro de Frequência, Lançamento de Notas e Impressão de Fechamento, são realizados por cada docente que possui acesso ao sistema;
+                    Preferencialmente as frequencias devem ser lançados no dia da aula;
+                    </li>
+                    <li>Lançamento de Notas
+                    As notas devem ser informadas de 0 a 100 (números inteiros) e
+                    somente as médias por módulo. 
+                    Não adicionar mais de uma nota por módulo, pois a segunda nota não entra na média.
+                    A média se atualiza de acordo com o lançamento das notas.
+                    </li>
+
+                    </ul>
+
+              </div>
+
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+    </div>
+
+</section>
+
+<!-- /.content -->
+<!--FIM Conteudo-->

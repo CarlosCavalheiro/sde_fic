@@ -1,0 +1,183 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Turma>
+@using SDE_FIC.Models
+@using PagedList.Mvc
+
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+
+<section class="content-header">
+    <h1>
+        Meus @{@ViewBag.Title}s
+        <small>Lista de Diários cadastradas</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+
+
+                        
+                        <!--Buscar-->
+                        @using (Html.BeginForm())
+                        {
+                            <div class="row col-sm-12">
+
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm ">
+                                        @Html.TextBox("strCriterioTurma", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Turma..." })
+                                    </div>
+                                </div>
+
+                                @if (Session["LogedUserPerfil"].ToString() == "professor")
+                                {
+
+                                    @Html.Hidden("strCriterioProfessor", null)
+                                }
+                                else
+                                {
+                                    <div class="col-sm-3">
+                                        <div class="input-group input-group-sm ">
+                                            @Html.TextBox("strCriterioProfessor", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Professor..." })
+
+                                        </div>
+                                    </div>
+
+                                }
+
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm">
+                                        @Html.TextBox("strCriterioCurso", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Curso..." })
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-3">
+                                    <div class="input-group input-group-sm">
+                                        @Html.DropDownList("strCriterioStatus", new SelectList(
+                                                   new List<SelectListItem>
+                                                                            {
+                                                                                new SelectListItem {Text = "ATIVA", Value = "1"},
+                                                                                new SelectListItem {Text = "FINALIZADA", Value = "0"},
+                                                                                new SelectListItem {Text = "TODOS", Value = "2"},
+                                                                            }, "Value", "Text"), "Status...", new { @class = "form-control", @style = "height: 35px; border-radius: 0px;" })
+
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-info btn-flat" style="height: 35px; "><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            </div>
+                        </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+                @if (Model != null)
+                {
+            <div class="box-body table-responsive">
+                <div class="row col-sm-12">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+
+                <table class="table table-hover dataTable dataTables_sizing">
+                    <thead>
+                        <tr>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>
+                                Turma
+                            </th>
+                            <th>
+                                Professor
+                            </th>
+                            <th style="text-align:center;">
+                                Status
+                            </th>
+                            <th style="text-align:center;">Ação</th>
+                        </tr>
+
+                    </thead>
+                    @{ int i = Model.FirstItemOnPage - 1;
+
+                        foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@(i = (i + 1)).</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao) - @Html.DisplayFor(modelItem => item.Curso.CursoNome)<br />
+                                    <small>
+                                        <b>Horário: </b> @Html.DisplayFor(modelItem => item.Horario) - <b>Início:</b> @item.DataInicio.Value.ToShortDateString() -
+                                        <b>Término:</b> @item.DataFim.Value.ToShortDateString()
+                                    </small>
+                                </td>
+                                <td>
+                                    @item.Funcionario.NomeCompleto.ToUpper()
+                                </td>
+                                <td style="text-align:center;">
+                                    <small>
+                                        @if (item.Status == true)
+                                        { Write("ATIVA"); }
+                                        else
+                                        { Write("FINALIZADA"); }
+                                    </small>
+                                </td>
+                                <td style="text-align:center; width: 100px;">
+                                    <a href="@Url.Action("Turma", "Diario", new { id = item.Idturma })">
+                                        <button type="button" id="Submit" class="btn" data-toggle="modal" data-target="#modal-carregando" title="Clique para editar o Diário"> <img src="~/Content/img/editar.png" alt="Editar"></button>
+                                    </a>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+                </table>
+
+                <div class="box-footer clearfix">
+                    <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterioCurso = ViewBag.strCriterioCurso, strCriterioTurma = ViewBag.strCriterioTurma, strCriterioStatus = ViewBag.strCriterioStatus, strCriterioProfessor = ViewBag.strCriterioProfessor }))
+                </div>
+            </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+                <!-- Alerta Carregado Modal-->
+                <div class="modal modal-info fade" id="modal-carregando">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Aguarde</h4>
+                                <div class="pull-right">
+                                    <a href="#" class="link-black" data-dismiss="modal" aria-label="Close" onclick="window.close()">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-body" style="text-align:center;">
+                                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i><br />Carregando Diário..
+                                <span class="sr-only">Carregando Diário...</span>
+
+                            </div>
+                            <div class="modal-footer">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SDE_FIC.Models.Matricula>
+
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Diario";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    var x = 0;
+}
+<section class="content-header">
+    <h1>
+        Aproveitamentos do @{@ViewBag.Title}
+        <small>Controle de Aproveitamentos</small>
+    </h1>
+</section>
+
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">  
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="box box-solid box-success">
+
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Novo Aproveitamento</h3>
+                                </div>
+                                <div class="box-body">
+                                    @using (Html.BeginForm("AproveitamentoNovo", "Diario", FormMethod.Post))
+                                    {
+                                        <input type="hidden" id="id" name="id" value="@itemTurma.Idturma" />
+                                        <div class="form-group">
+                                            <label>Aluno: </label><br />
+                                            @Html.DropDownList("IdMatricula", ViewBag.matriculas_idmatriculas as SelectList, "", new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Unidade Curricular: </label><br />
+                                            @Html.DropDownList("IdUnidadeCurricular", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "", new { @class = "form-control" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button class="btn btn-success" type="submit">Salvar</button>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="box-footer">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="box box-solid box-primary">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Registro de Aproveitamentos</h3>
+                                </div>
+                                <div class="box-body no-padding">
+
+
+                                    @*@using (Html.BeginForm())
+                    {
+
+                        @Html.ActionLink("Novo Aproveitamento", "AproveitamentoNovo", new { @id = ViewBag.turma_idturma, @class = "btn btn-primary" }, "Diario")
+
+                    }*@
+                                    <div class="box-body table-responsive no-padding">
+
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:50%; vertical-align:middle;">Alunos</th>
+
+                                                    <th style="width:35%; text-align:center; vertical-align:middle;">Unidade Curricular</th>
+
+                                                    <th style="width:5%; text-align:center; vertical-align:middle;">Sigla</th>
+
+                                                    <th style="width:10%; text-align:center; vertical-align:middle;">Ação</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+
+                                                @{
+
+                                                    foreach (var item in Model)
+                                                    {
+
+                                                        for (int i = 0; i < item.listaAproveitamentos.Count(); i++)
+                                                        {
+                                                            <tr>
+                                                                <td style="font-size: 10pt;">@item.Aluno.Nome.ToUpper()</td>
+
+                                                                <td style="text-align:center; font-size: 10pt;">
+                                                                    @item.listaAproveitamentos[i].UnidadeCurricular.Descricao
+                                                                </td>
+
+                                                                <td style="text-align:center; font-size: 10pt; vertical-align:middle;">
+                                                                    @item.listaAproveitamentos[i].UnidadeCurricular.Sigla
+                                                                </td>
+
+                                                                <td style="text-align:center; font-size: 10pt;">
+                                                                    <a href="@Url.Action("AproveitamentoExcluir", "Diario", new { id = ViewBag.turma_idturma , IdAproveitamento = item.listaAproveitamentos[i].IdAproveitamento })"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="box-footer">
+                                    <br />
+                                    <div class="alert alert-info">
+
+                                        <h4><i class="icon fa fa-info"></i>Informação</h4>
+                                        Ao adicionar um aproveitamento o aluno será dispensado da unidade curricular, presenças e médias serão refeitas com base no aproveitamento.
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>

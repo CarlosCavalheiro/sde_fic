@@ -1,0 +1,295 @@
+﻿@using SDE_FIC;
+@model SDE_FIC.Models.Diario
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    var x = 0;
+}
+
+
+<section class="content-header">
+    <h1>
+        Novo Lançamento de @{@ViewBag.Title}
+        <small>Controle de Frequências, Conteúdos e Notas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = Model.Turma.Idturma })">@Model.Turma.Descricao</a> - @Model.Turma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close" data-toggle="modal" data-target="#modal-carregando"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+                    int idturma = ViewBag.turma_idturma;
+                    @Html.Hidden("Idturma", idturma)
+                    @Html.HiddenFor(model => Model.IdDiario)
+                    @Html.ValidationMessageFor(model => Model.Data)
+                    @Html.ValidationMessageFor(model => Model.HoraAulaDia)
+                    @Html.ValidationMessageFor(model => Model.IdUnidadeCurricular)
+                    @Html.ValidationMessageFor(model => Model.Conteudo)
+                    int strcriterio = ViewBag.strCriterio;
+                    int strcriterioanterior = ViewBag.strCriterioAnterior;
+                    int mostrarconteudo = ViewBag.mostrarConteudo;
+                    @Html.Hidden("strCriterio", strcriterio)
+                    @Html.Hidden("strCriterioAnterior", strcriterioanterior)
+                    @Html.Hidden("mostrarConteudo", mostrarconteudo)
+
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="box box-solid box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Conteúdo</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <div style="width: 100%; float: left;">
+                                            @Html.ValidationMessageFor(model => Model.Data)
+                                            @Html.ValidationMessageFor(model => Model.HoraAulaDia)
+                                            @Html.ValidationMessageFor(model => Model.IdUnidadeCurricular)
+                                            @Html.ValidationMessageFor(model => Model.Conteudo)
+
+                                            <b>Data </b><small style="color:red;">*</small>
+                                            <div>
+                                                @Html.EditorFor(model => Model.Data, new { @class = "form-control", @style = "heigth: 30px;" })
+                                            </div>
+
+                                            <b>Hora Aula Dia </b><small style="color:red;">*</small>
+
+                                            <div>
+                                                @Html.TextBoxFor(model => Model.HoraAulaDia, new { @class = "form-control" })
+                                            </div>
+
+                                            <b>Unidade Curricular</b> <small style="color:red;">*</small>
+                                            <div>
+                                                @Html.DropDownListFor(model => Model.IdUnidadeCurricular, ViewBag.unidadecurricular_idunidadecurricular as SelectList, "", new { @class = "form-control" })
+                                            </div>
+                                            <SCRIPT LANGUAGE="JavaScript">
+                                                function textCounter(field, countfield, maxlimit) {
+                                                    if (field.value.length > maxlimit)
+                                                        field.value = field.value.substring(0, maxlimit);
+                                                    else
+                                                        countfield.value = maxlimit - field.value.length;
+                                                }
+
+                                                /**/</SCRIPT>
+
+                                            <br />
+                                            <b>Conteúdo Formativo (Máx. <input readonly type=text name=remLen size=3 maxlength=3 value="150" style="margin:4px; width:30px; height:20px;">) <small style="color:red;">*</small></b>
+                                            @Html.TextAreaFor(model => Model.Conteudo, new { @class = "form-control", @style = "height: 150px;", onKeyDown = "textCounter(this.form.Conteudo,this.form.remLen,150);", onKeyUp = "textCounter(this.form.Conteudo,this.form.remLen,150);" })
+
+                                            <br />
+                                            <b>Ocorrência (Máx. <input readonly type=text name=remLen1 size=3 maxlength=3 value="300" style="margin:4px; width:30px; size: 8; height:20px;">)</b>
+                                            @Html.TextAreaFor(model => Model.Ocorrencia, new { @class = "form-control", @style = "height: 100px;", onKeyDown = "textCounter(this.form.Ocorrencia,this.form.remLen1,300);", onKeyUp = "textCounter(this.form.Ocorrencia,this.form.remLen1,300);" })
+
+
+                                        </div>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="box box-solid box-success">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Lançamento de Frequência</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr class="small">
+                                                    <th>
+                                                        Alunos
+                                                    </th>
+                                                    <th>
+                                                        Presença
+                                                    </th>
+                                                    <th width="50px">
+                                                        Hora
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{int NAluno = 0;}
+                                                @for (var i = 0; i < Model.Frequencias.Count; i++)
+                                                {
+                                                    NAluno = i + 1;
+
+                                                    <tr style="font-size:small;">
+                                                        <td style="width: 400px;">
+
+
+                                                            @NAluno) @Model.Frequencias[i].Matricula.Aluno.Nome.ToUpper()
+                                                            @if (Model.Frequencias[i].Matricula.Situacao == "Evadido")
+                                                            {
+                                                                Write("*" + Model.Frequencias[i].Matricula.DataSituacao.ToShortDateString());
+                                                            }
+                                                            @if (Model.Frequencias[i].Matricula.Situacao == "Transferido (S)")
+                                                            {
+                                                                Write("****" + Model.Frequencias[i].Matricula.DataSituacao.ToShortDateString());
+                                                            }
+                                                            @if (Model.Frequencias[i].Matricula.Situacao == "Transferido (E)")
+                                                            {
+                                                                Write("****" + Model.Frequencias[i].Matricula.DataSituacao.ToShortDateString());
+                                                            }
+
+                                                            @{
+                                                                int TotalAproveitamentos = Model.Turma.ListaMatriculas[i].listaAproveitamentos.Count();
+                                                                string TxtAproveitamento = "";
+                                                                if (TotalAproveitamentos != 0)
+                                                                {
+                                                                    for (int j = 0; j < TotalAproveitamentos; j++)
+                                                                    {
+                                                                        TxtAproveitamento = TxtAproveitamento + "(" + Model.Turma.ListaMatriculas[i].listaAproveitamentos[j].UnidadeCurricular.Sigla + ")";
+                                                                    };
+                                                                    Write("**" + TxtAproveitamento);
+                                                                }
+                                                            }
+                                                            @Html.HiddenFor(m => Model.Frequencias[i].IdFrequencia)
+                                                            @Html.HiddenFor(m => Model.Frequencias[i].Matricula.IdMatricula)
+                                                        </td>
+
+
+                                                        @if (Model.Frequencias[i].Matricula.Situacao == "Evadido")
+                                                        {
+                                                            <td style="text-align: center;">
+                                                                <b style="color:blue;">E</b>
+                                                                @Html.HiddenFor(m => Model.Frequencias[i].Presenca, new { Value = "E" })
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <b style="color:blue;">0</b>
+                                                                @Html.HiddenFor(m => Model.Frequencias[i].HoraAula, new { Value = 0 })
+                                                            </td>
+                                                        }
+                                                        else if (Model.Frequencias[i].Matricula.Situacao == "Desistente")
+                                                        {
+                                                            <td style="text-align: center;">
+                                                                <b style="color:blue;">D</b>
+                                                                @Html.HiddenFor(m => Model.Frequencias[i].Presenca, new { Value = "D" })
+                                                            </td>
+                                                            <td style="text-align: center;">
+                                                                <b style="color:blue;">0</b>
+                                                                @Html.HiddenFor(m => Model.Frequencias[i].HoraAula, new { Value = 0 })
+                                                            </td>
+                                                        }
+
+                                                        else
+                                                        {
+                                                            <td style="text-align: center;" onclick="mudar_@{@i}();">
+
+                                                                <script language="JavaScript" type="text/javascript">
+                                                                function mudar_@{@i}() {
+                                                                    valor = document.getElementById('Frequencias_@{@i}').innerHTML;
+                                                                    if (valor == 'P') {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'A';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'A';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '0,0';
+                                                                    } else if (valor == 'A') {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'TE';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'TE';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
+                                                                    } else if (valor == 'TE') {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'TS';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'TS';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
+                                                                    } else if (valor == 'TS') {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'R';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'R';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
+                                                                    } else {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'P';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'P';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
+                                                                    }
+                                                                }
+                                                                //-->
+                                                                </script>
+                                                                <a><span id="Frequencias_@{@i}">@Model.Frequencias[i].Presenca</span></a>
+                                                                @Html.Display("Frequencias_" + @i + "__Presenca", new { Value = Model.Frequencias[i].Presenca })
+                                                                @Html.HiddenFor(m => Model.Frequencias[i].Presenca, new { Value = Model.Frequencias[i].Presenca })
+                                                                @*<input type="hidden" id="Frequencias_@{@i}_Presenca" value="P" class="form-control small" />*@
+                                                            </td>
+                                                            <td style="text-align: center; width:60px;">
+                                                                @Html.TextBoxFor(m => Model.Frequencias[i].HoraAula, new { Value = Model.Frequencias[i].HoraAula.ToString("0.0"), @style = "width: 35px; height: 20px; padding: 2px 2px; margin-bottom: 0px; font-size: 10px; line-height: 20px; text-align: center;" })
+                                                                @*<input type="text" id="Frequencias_@{@i}__HoraAula" value="@Model.Turma.HorasAula.ToString("0.0")" class="form-control" style="width: 45px; font-size:small; height:20px;" />*@
+                                                            </td>
+
+
+                                                        }
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <br />
+<pre>
+Obs: Clique na Letra do campo presença para alternar.
+
+<b>Sigla    Descrição         Sigla     Descrição</b>
+(P)      Presença          (E)       Evadido 
+(A)      Ausência          (D)       Desistente
+(TE)     Atraso            (TS)      Saída antes do Término  
+(AP)     Aproveitamento    (R)       Reposição de Aula
+</pre>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="box-footer">
+
+
+
+                        <input type="submit" value="Salvar" class="btn btn-success" id="btnSubmit" data-toggle="modal" data-target="#modal-carregando" />
+                        <a href="~/Diario/Turma/@Model.Turma.Idturma" class="btn btn-default pull-right">Limpar</a>
+                    </div>
+
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>
+
+

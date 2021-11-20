@@ -1,0 +1,166 @@
+﻿@using SDE_FIC
+@model SDE_FIC.Models.Matricula
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Matricula";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    ViewBag.dataatual = DateTime.Now.Date.ToString("d");
+}
+
+
+
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Editar matriculas realizadas</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h4>Turma: @Model.Turma.Descricao - @Model.Turma.Curso.CursoNome</h4>
+                                    <small>
+                                        <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                        <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                    </small>
+                                </div>
+
+                            </div>
+
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Matricula" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="collapse" id="collapseExample">
+                            <div class="box" style="background-color:#e4e7e9;">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <a href="~/Matricula/Create/@Model.Turma.Idturma">
+                                            <button class="btn btn-app" style="width:100px;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-plus-circle"></i>&nbsp;Nova Matricula</button>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="~/Matricula/Importar/@Model.Turma.Idturma">
+                                            <button class="btn btn-app" style="width:100px;" data-toggle="modal" data-target="#modal-carregando"><i class="fa fa-upload"></i>&nbsp;Importar</button>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-solid box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Alunos Cadastrados no Sistema </h3>
+                                </div>
+                                <div class="box-body">
+
+                                    @using (Html.BeginForm(FormMethod.Get))
+                                    {
+                                        @Html.ValidationSummary(true)
+
+                                        @Html.HiddenFor(model => model.IdMatricula)
+                                        @Html.HiddenFor(model => Model.IdTurma, new { @Value = ViewBag.turma_idturma })
+
+                                        <div class="form-group ">
+                                            <label><strong>Data da Matricula</strong></label><br />
+                                            @Html.DisplayFor(model => model.Aluno.Nome, new { @class = "form-control" })
+                                            @Html.HiddenFor(model => model.IdAluno)
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label><strong>Data da Matricula</strong></label><br />
+                                            @Model.DataMatricula.ToShortDateString()
+                                            @Html.HiddenFor(model => model.DataMatricula)
+                                        </div>
+
+                                        <div class="form-group ">
+                                            <label><strong>Data da Situação</strong></label><br />
+                                            @Html.EditorFor(model => model.DataSituacao, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.DataSituacao)
+                                        </div>
+
+                                        <div class="form-group ">
+                                            <strong>@Html.LabelFor(model => model.Situacao, "Situação")</strong>
+                                            @Html.DropDownListFor(model => model.Situacao, new SelectList(
+                                                    new List<Object>{
+                                                                    new { value = "Ativo" , text = "Ativo"  },
+                                                                    new { value = "Evadido" , text = "Evadido" },
+                                                                    new { value = "Desistente" , text = "Desistente" },
+                                                                    new { value = "Transferido (E)" , text = "Transferido (E)" },
+                                                                    }, "value", "text"), new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Situacao)
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="submit" value="Alterar" class="btn btn-success" />
+                                            
+                                        </div>
+
+                                    }
+
+                                </div>
+                                <div class="box-footer">
+
+                                    <div>@Model.Turma.Curso.CargaHoraria h - Carga Horária Total</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                            <div class="box box-solid box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Alunos Matriculados</h3>
+                                </div>
+                                <div class="box-body">
+
+                                    @Html.Partial("~/Views/Sistema/Matricula/GetMatriculas.cshtml", Model.listaMatriculas)
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+            </div>
+    </div>
+</section>

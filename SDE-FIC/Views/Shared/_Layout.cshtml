@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" media="screen">
+    @Styles.Render("~/Content/js")
+</head>
+<body>
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+    <div style="margin: 0 auto 0 auto; width: 500px; text-align: center;">
+        <small>&copy;2015 - 2020 - Desenvolvido por <a href="mailto:vouler@hotmail.com">Carlos Alexandre Cavalheiro</a></small>
+
+    </div>
+
+</body>
+</html>

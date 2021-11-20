@@ -1,0 +1,198 @@
+﻿@model SDE_FIC.Models.Notas
+
+@{
+    ViewBag.Title = "Diario";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+
+<section class="content-header">
+    <h1>
+        Notas do @{@ViewBag.Title}
+        <small>Controle de Notas/Avaliações</small>
+    </h1>
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+                    @using (Html.BeginForm())
+                    {
+                        <div class="box box-solid box-primary">
+
+                            <div class="box-header with-border" style="vertical-align:middle; padding:5px; margin:0px;">
+                                <span>Registro de Notas/Avaliações</span>
+                                <div class="pull-right" style="margin-top:0px; margin-bottom: 0px; padding:0px;">
+                                    @Html.DropDownList("IdUnidadeCurricular", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "Selecionar Unidade...", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="box-body no-padding">
+
+                                <div class="box-body table-responsive no-padding">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ALUNOS MATRICULADOS</th>
+
+                                                <th style="width:150px; text-align:center; vertical-align:middle; font-size: small; padding:0;">
+                                                    NOTAS
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                List<SDE_FIC.Models.Matricula> lMatriculas = ViewBag.lMatriculas;
+                                                int nAluno = 0;
+                                                for (int i = 0; i < lMatriculas.Count(); i++)
+                                                {
+                                                    nAluno = nAluno + 1;
+                                                    <tr style="height: 10px; position: relative;">
+                                                        <td style="vertical-align:middle;">
+
+                                                            @if (lMatriculas[i].Situacao == "Evadido")
+                                                            {
+
+                                                                <small>@nAluno) <i class="fa fa-close text-red"></i> <strike>@lMatriculas[i].Aluno.Nome</strike> *@lMatriculas[i].DataSituacao.ToShortDateString()</small>
+                                                            }
+                                                            else
+                                                            {
+                                                                <small>
+                                                                    @nAluno)
+                                                                    @lMatriculas[i].Aluno.Nome
+                                                                    @if (lMatriculas[i].listaAproveitamentos.Count() > 0)
+                                                                    {
+                                                                        Write("(");
+                                                                        foreach (var a in lMatriculas[i].listaAproveitamentos)
+                                                                        {
+                                                                            Write("*" + a.UnidadeCurricular.Sigla.ToString());
+                                                                        }
+                                                                        Write(")");
+                                                                    }
+                                                                </small>
+                                                            }
+
+
+                                                        </td>
+
+
+
+
+
+                                                        <td style="text-align:center; height: 10px;">
+                                                            <center>
+                                                                <input type="hidden" name="IdMatricula" value="@lMatriculas[i].IdMatricula" />
+                                                                <input type="text" name="Nota" value="0" class="form-control" style="width: 50px; height:30px;" />
+                                                            </center>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                @*<div class="form-group">
+            <button class="btn btn-sucsess" type="submit" data-toggle="modal" data-target="#modal-carregando">Salvar</button>
+        </div>*@
+
+
+                                <!-- Alerta Exclusão Modal-->
+                                <div class="modal modal-info fade" id="modal-carregando">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                                <h4 class="modal-title">Aguarde</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>Aguarde
+                                                <span class="sr-only">Inserindo...</span>
+                                            </div>
+                                            <div class="modal-footer">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <div class="form-group">
+                                    <input type="submit" value="Registrar  Notas" class="btn btn-success" data-toggle="modal" data-target="#modal-carregando" />
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                    }
+                    <div class="alert alert-info">
+
+                        <h4><i class="icon fa fa-info"></i>Informação</h4>
+                        As Notas devem possuir valores de 0 a 100.
+                    </div>
+
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>

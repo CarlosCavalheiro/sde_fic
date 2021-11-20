@@ -1,0 +1,58 @@
+﻿@model SDE_FIC.Models.Aproveitamentos
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+<h2>@ViewBag.Title de Turma > Editar > Aproveitamentos</h2>
+
+<legend><h5>
+    Turma: <a href="@Url.Action("Turma", "Diario", new { id = ViewBag.turma_idturma }, null)">@ViewBag.turma_descricao</a>  <br />
+    @Html.ActionLink("Novo Lançamento", "LancamentoNovo", new { id = ViewBag.turma_idturma }, "Diario") |
+    @Html.ActionLink("Conteúdos", "Conteudo", new { id = ViewBag.turma_idturma }, "Diario") | 
+    @Html.ActionLink("Frequências", "Frequencia", new { id = ViewBag.turma_idturma }, "Diario") |  
+    @Html.ActionLink("Notas", "Notas", new { id = ViewBag.turma_idturma }, "Diario") | 
+    @Html.ActionLink("Aproveitamentos", "Aproveitamentos", new { id=ViewBag.turma_idturma }, "Diario") |
+    @Html.ActionLink("Relatório(PDF)", "GerarPDF", new { id=ViewBag.turma_idturma }, "Diario") | 
+    @Html.ActionLink("Meus Diários", "Index", "Diario")
+
+    </h5></legend>
+
+@using (Html.BeginForm()){
+<div style="width: 100%; float: left;">
+        @Html.ActionLink("Novo Aproveitamento", "AproveitamentoNovo", new { id = ViewBag.turma_idturma }, "Diario") |  @Html.ActionLink("Listar Aproveitamentos", "Aproveitamentos", new { id=ViewBag.turma_idturma }, "Diario")
+<br /><br />
+        <table class="table table-bordered table-hover">
+
+                <tr>
+                    <th style="width:200px; text-align:center; vertical-align:middle;">Aluno: @Html.DropDownList("IdMatricula", ViewBag.matriculas_idmatriculas as SelectList, "", new { @style = "height:25px; position: relative; margin-top:0px; margin-bottom:-1px;" })</th>
+                    <th style="width:150px; text-align:center; vertical-align:middle;">Unidade Curricular: @Html.DropDownList("IdUnidadeCurricular", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "", new { @style = "height:25px; position: relative; margin-top:0px; margin-bottom:-1px;" })</th>
+               </tr>
+
+        </table>
+
+        <div class="alert alert-success">
+            <small><b>Obs:</b> Ao adicionar um aproveitamento o aluno será dispensado da unidade curricular.<br /> Presenças e médias serão refeitas com base no aproveitamento.</small>
+        </div>
+</div>     
+<div style="width: 100%;">
+    <button class="btn btn-sucsess " type="submit">Salvar</button>
+</div>
+}
+    
+<!--Mensagem de Modal Notificação Ação-->
+@if (TempData["Erro"] == "0")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Success.cshtml")
+     <script type="text/javascript">
+         $('#myModal').modal('show');
+    </script>
+}else if(TempData["Erro"] == "1")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Error.cshtml")
+    <script type="text/javascript">
+        $('#myModal').modal('show');
+    </script>
+}    
+    
+      

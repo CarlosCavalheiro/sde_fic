@@ -1,0 +1,244 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Turma>
+@using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Turma";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Lista de Turma cadastradas</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                {
+                                    <div class="col-sm-2">
+                                        <a href="~/Turma/Create" class="btn btn-success"><i class="fa fa-plus-circle"></i>&nbsp;Nova Turma</a>
+                                    </div>
+                                }
+                                <!--Buscar-->
+                                <div class="col-sm-10">
+
+                                    @using (Html.BeginForm())
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm ">
+                                                @Html.TextBox("strCriterioTurma", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Turma..." })
+
+                                            </div>
+                                        </div>
+                                        @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                        {
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm ">
+                                                @Html.TextBox("strCriterioProfessor", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Professor..." })
+
+                                            </div>
+                                        </div>
+                                        }
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm">
+                                                @Html.TextBox("strCriterioCurso", null, new { @class = "form-control", @style = "height: 35px;", @placeholder = "Curso..." })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm">
+                                                @Html.DropDownList("strCriterioStatus", new SelectList(
+                                                           new List<SelectListItem>
+                                                                                    {
+                                                                                        new SelectListItem {Text = "ATIVA", Value = "1" },
+                                                                                        new SelectListItem {Text = "FINALIZADA", Value = "0"},
+                                                                                        new SelectListItem {Text = "TODAS", Value = "2" },
+                                                                                    }, "Value", "Text"), "Status...", new { @class = "form-control", @style = "height: 35px; border-radius: 0px;" })
+
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-info btn-flat" style="height: 35px;"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+                                }
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+                @if (Model != null)
+                {
+            <div class="box-body table-responsive">
+                <div class="row col-sm-12">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+
+                <table class="table table-hover dataTable dataTables_sizing">
+                    <thead>
+                        <tr>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>
+                                Descrição
+                            </th>
+                            <th>
+                                Professor
+                            </th>
+                            <th>
+                                S
+                            </th>
+                            <th>
+                                T
+                            </th>
+                            <th>
+                                Q
+                            </th>
+                            <th>
+                                Q
+                            </th>
+                            <th>
+                                S
+                            </th>
+                            <th>
+                                S
+                            </th>
+                            <th>
+                                D
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th style="text-align:center;">Ação</th>
+                        </tr>
+
+                    </thead>
+                    @{ int i = Model.FirstItemOnPage - 1;
+
+                        foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>@(i = (i + 1)).</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Descricao) - @Html.DisplayFor(modelItem => item.Curso.CursoNome)<br />
+                                    <small>
+                                        <b>Horário: </b> @Html.DisplayFor(modelItem => item.Horario) - <b>Início:</b> @item.DataInicio.Value.ToShortDateString() -
+                                        <b>Término:</b> @item.DataFim.Value.ToShortDateString()
+                                    </small>
+                                </td>
+                                <td>
+                                    @item.Funcionario.NomeCompleto.ToUpper()
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Segunda, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Terca, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Quarta, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Quinta, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Sexta, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Sabado, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    @Html.CheckBoxFor(modelItem => item.Domingo, new { @disabled = true })
+                                </td>
+                                <td style="text-align:center;">
+                                    <small>
+                                        @if (item.Status == true)
+                                        { Write("ATIVA"); }
+                                        else
+                                        { Write("FINALIZADA"); }
+                                    </small>
+                                </td>
+                                <td style="text-align:center; width: 100px;">
+                                    <a href="@Url.Action("Edit", "Turma", new { id = item.Idturma })"><img src="~/Content/img/editar.png" alt="Editar" /></a>
+                                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                    {
+                                        <a href="#" type="button" data-toggle="modal" data-target="#modal_danger_@item.Idturma"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+                                    }
+                                    <!--MODAL PARA EXCLUSÃO-->
+                                    <div class="modal modal-danger fade" id="modal_danger_@item.Idturma" style="display: none;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Cuidado</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">×</span>
+                                                    </button>
+
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <p>Tem certeza de que deseja excluir a Turma cadastrado?</p>
+                                                    <p>Turma: @item.Descricao</p>
+                                                    <p>Curso: @item.Curso.CursoNome</p>
+                                                    <p>Horário: @item.Horario</p>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+                                                    <!--<button type="button" class="btn btn-outline">Sim</button>-->
+                                                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                                    {
+                                                        <a href="@Url.Action("Delete", "Turma", new { id = item.Idturma })" class="btn btn-outline">Sim</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+
+
+                                </td>
+                            </tr>
+
+                        }
+                    }
+
+                </table>
+
+                <div class="box-footer clearfix">
+                    <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterioCurso = ViewBag.strCriterioCurso, strCriterioTurma = ViewBag.strCriterioTurma, strCriterioStatus = ViewBag.strCriterioStatus, strCriterioProfessor = ViewBag.strCriterioProfessor }))
+                </div>
+            </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+

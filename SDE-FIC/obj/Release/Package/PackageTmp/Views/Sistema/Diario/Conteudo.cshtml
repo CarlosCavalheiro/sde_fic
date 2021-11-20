@@ -1,0 +1,188 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Diario>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Conteúdo do @{@ViewBag.Title}
+        <small>Controle de Conteúdo</small>
+    </h1>
+</section>
+
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+
+                    <div class="box box-solid box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Registro de Conteúdo</h3>
+
+                            <div class="box-tools right">
+                                <div class="input-group input-group-sm hidden-xs">
+                                    @using (Html.BeginForm())
+                                    {
+                                        <div class="input-group input-group-sm">
+                                            @Html.DropDownList("strCriterio", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "TODOS", new { @class = "form-control", @style = "height: 30px; border-radius: 0px;" })
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-info btn-flat" style="height: 30px;"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <div class="box-body table-responsive no-padding">
+
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">
+                                                Data
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Unidade Curricular
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Conteúdo Formativo
+                                            </th>
+                                            <th style="text-align: center;">
+                                                Ocorrência
+                                            </th>
+
+                                            <th style="text-align: center;">Ação</th>
+                                        </tr>
+
+                                    </thead>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center; width:80px;">
+                                                    @item.Data.ToShortDateString()
+                                                </td>
+                                                <td style="text-align:center; width:140px;">
+                                                    @Html.DisplayFor(modelItem => item.UnidadeCurricular.Descricao)
+                                                </td>
+                                                <td style="text-align:center; width:350px; word-wrap: break-word; font-size: x-small;">
+                                                    @Html.DisplayFor(modelItem => item.Conteudo)
+                                                </td>
+                                                <td style="text-align:center; width:350px; word-wrap: break-word; font-size: x-small;">
+                                                    @Html.DisplayFor(modelItem => item.Ocorrencia)
+                                                </td>
+                                                @*, idturma = ViewBag.turma_idturma*@
+                                                <td style="text-align:center; width:80px;">
+                                                    @if (Session["LogedUserPerfil"].ToString() == "professor" || Session["LogedUserPerfil"].ToString() == "coordenador")
+                                                    {
+                                                        <a href="@Url.Action("LancamentoEditar", "Diario", new { id = item.IdTurma , mostrarConteudo = 1,  idDiario = item.IdDiario,  strCriterio = ViewBag.strCriterio, strCriterioAnterior = ViewBag.strCriterioAnterior })"><img src="~/Content/img/editar.png" alt="Editar" /></a>
+                                                        <a href="@Url.Action("LancamentoExcluir", "Diario", new { id = item.IdTurma , mostrarConteudo = 1, idDiario = item.IdDiario,  strCriterio = ViewBag.strCriterio, strCriterioAnterior = ViewBag.strCriterioAnterior })"><img src="~/Content/img/excluir.png" alt="Excluir" /></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        Write("-");
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    }
+                                </table>
+
+                            </div>
+
+                        </div>
+                        <div class="box-footer">
+
+
+                            <div style="font-size: 8pt; width: 100%; text-align: right;">
+                                @Html.PagedListPager(Model, page => Url.Action("Conteudo", new { pagina = page, strCriterio = ViewBag.strCriterio, strCriterioAnterior = ViewBag.strCriterioAnterior }))
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+    <!-- Modal Mensagem-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Lançamento Diário</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success">
+                        @TempData["Mensagem"]
+                    </div>
+                    @*      </div>
+                        <div class="modal-footer">*@
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+                    @*        <button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>

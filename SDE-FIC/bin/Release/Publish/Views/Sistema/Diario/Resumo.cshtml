@@ -1,0 +1,175 @@
+﻿@model SDE_FIC.Models.Diario
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    //int x = 0;
+}
+
+<section class="content-header">
+    <h1>
+        Visão Geral do Diário
+        <small>Controle de Frequências, Conteúdos e Notas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = Model.Turma.Idturma })">@Model.Turma.Descricao</a> - @Model.Turma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="box box-solid box-success">
+                                <div class="box-header with-border">
+                                    <h2 class="box-title">Resumo de Hora Realizada X Unidade Curricular</h2>
+                                </div>
+                                <div class="box-body">
+                                    @for (int i = 0; i < Model.Turma.Curso.lUnidadesCurriculares.Count(); i++)
+                                    {
+                                        decimal TotalHorasDiario = Model.Turma.Diario.Where(vl => vl.IdUnidadeCurricular == Model.Turma.Curso.lUnidadesCurriculares[i].IdUnidadeCurricular).Sum(vl => vl.HoraAulaDia);
+                                        float CargaHoraria = Model.Turma.Curso.lUnidadesCurriculares[i].CargaHoraria;
+                                        decimal PercetualUnidade = ((TotalHorasDiario / Convert.ToDecimal(CargaHoraria)) * 100);
+
+                                        <p class="small"> @TotalHorasDiario.ToString() / @CargaHoraria.ToString() h - @Model.Turma.Curso.lUnidadesCurriculares[i].Descricao</p>
+
+                                        <div class="progress progress-sm active">
+                                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@TotalHorasDiario" aria-valuemin="0" aria-valuemax="@CargaHoraria" style="width: @Convert.ToInt32(PercetualUnidade)%">
+                                                <span class="sr-only">@PercetualUnidade% Completo</span>
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="box box-solid box-warning">
+                                <div class="box-header with-border">
+                                    <h2 class="box-title">Resumo Quantitativo</h2>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body text-center">
+                                    <div style="text-align:left; text-align: center;">
+                                        <div class="progress vertical">
+                                            @{
+                                                float TotalMatriculas = Model.Turma.ListaMatriculas.Count();
+                                                float TotalEvadidos = Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Evadido").Count();
+                                                float TotalAtivos = Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Ativo").Count();
+                                                float PercentualMatriculas = ((TotalMatriculas / 16) * 100);
+                                                float PercentualEvadidos = ((TotalEvadidos / TotalMatriculas) * 100);
+                                                float PercentualAtivos = ((TotalAtivos / TotalMatriculas) * 100);
+
+
+                                            }
+                                            <div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="@TotalMatriculas" aria-valuemin="0" aria-valuemax="16" style="height: @Convert.ToInt32(PercentualMatriculas)%">
+                                                <span class="sr-only">@TotalMatriculas</span>
+                                            </div>
+                                        </div>
+                                        <div class="progress vertical">
+                                            <div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="@TotalEvadidos" aria-valuemin="0" aria-valuemax="16" style="height: @Convert.ToInt32(PercentualEvadidos)%">
+                                                <span class="sr-only">TotalEvadidos</span>
+
+                                            </div>
+                                        </div>
+                                        <div class="progress vertical">
+                                            <div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="@TotalAtivos" aria-valuemin="0" aria-valuemax="16" style="height: @Convert.ToInt32(PercentualAtivos)%">
+                                                <span class="sr-only">@TotalAtivos</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="footer" style="text-align:left;">
+                                        <ul class="chart-legend clearfix">
+                                            <li><i class="fa fa-circle-o text-green"></i> @Model.Turma.ListaMatriculas.Count() - Matriculas</li>
+                                            <li><i class="fa fa-circle-o text-red"></i> @Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Evadido").Count() - Evadidos </li>
+                                            <li><i class="fa fa-circle-o text-yellow"></i> @Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Ativo").Count() - Ativos </li>
+
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="box box-solid box-primary">
+                                <div class="box-header with-border">
+                                    <h2 class="box-title">Faltas no Último Lançamento</h2>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    @if (Model.Turma.Diario.LastOrDefault() != null)
+                                    {
+
+                                        <p>Data: @Model.Turma.Diario.LastOrDefault().Data.ToShortDateString()</p>
+                                        for (int i = 0; i < Model.Turma.Diario.LastOrDefault().Frequencias.Where(item => item.Presenca == "A").Count(); i++)
+                                        {
+
+                                            <p>
+                                                <i class="fa fa-circle-o text-aqua"></i>&nbsp;&nbsp; @Model.Turma.Diario.LastOrDefault().Frequencias[i].Matricula.Aluno.Nome <br />
+                                                @Model.Turma.Diario.LastOrDefault().Frequencias[i].Matricula.Aluno.TelefoneCelular &nbsp;&nbsp; @Model.Turma.Diario.LastOrDefault().Frequencias[i].Matricula.Aluno.TelefoneResidencial
+                                            </p>
+
+                                        }
+                                    }
+                                    @if (Model.Turma.Diario.LastOrDefault().Frequencias.Where(item => item.Presenca == "A").Count() == 0)
+                                    {
+                                        <p>Nenhuma Falta</p>
+                                    }
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+
+
+                    </div>
+                   
+
+
+
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>
+

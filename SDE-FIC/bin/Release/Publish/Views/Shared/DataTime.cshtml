@@ -1,0 +1,45 @@
+﻿@model Nullable<datetime>
+ 
+@
+if
+ 
+(Model.HasValue)
+{
+    
+@Html.TextBox(“”, 
+string
+.Format(“{0:dd/MM/yyyy}”, Model.Value))
+}
+else
+{
+   
+@Html.TextBox(“”, 
+string
+.Format(“{0:dd/MM/yyyy}”, DateTime.Now))
+}
+ 
+@{
+    
+string
+ 
+id = ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(“”);
+}
+ 
+<script type=
+"text/javascript"
+>
+    
+$(document).ready(function ()
+    
+{
+        
+$(
+"#@id"
+).mask(
+"99/99/9999"
+);
+    
+});
+</script>
+
+

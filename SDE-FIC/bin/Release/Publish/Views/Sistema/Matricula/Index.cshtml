@@ -1,0 +1,172 @@
+﻿@model PagedList.IPagedList<SDE_FIC.Models.Turma>
+@using SDE_FIC.Models
+@using PagedList.Mvc
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Matricula";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Lista de Turmas cadastradas e matriculas realizadas</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding">
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <!--Buscar-->
+                                <div class="col-sm-12">
+
+                                    @using (Html.BeginForm())
+                                    {
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm ">
+                                                @Html.TextBox("strCriterioTurma", null, new { @class = "form-control pull-right", @style = "height: 35px;", @placeholder = "Turma..." })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm ">
+                                                @Html.TextBox("strCriterioProfessor", null, new { @class = "form-control pull-right", @style = "height: 35px;", @placeholder = "Professor..." })
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm">
+                                                @Html.TextBox("strCriterioCurso", null, new { @class = "form-control pull-right", @style = "height: 35px;", @placeholder = "Curso..." })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="input-group input-group-sm">
+                                                @Html.DropDownList("strCriterioStatus", new SelectList(
+                                                           new List<SelectListItem>
+                                                                                    {
+                                                                                        new SelectListItem {Text = "ATIVA", Value = "1"},
+                                                                                        new SelectListItem {Text = "FINALIZADA", Value = "0"},
+                                                                                        new SelectListItem {Text = "TODAS", Value = "2" },
+                                                                                    }, "Value", "Text"), "Status...", new { @class = "form-control", @style = "height: 35px; border-radius: 0px;" })
+
+                                                <span class="input-group-btn">
+                                                    <button type="submit" class="btn btn-info btn-flat" style="height: 35px;"><i class="fa fa-search"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            }
+
+                                        
+                                    </div>
+                               
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <!---FIM TOPO -->
+                <!---INICIO DATATABLE -->
+
+                @if (Model.Count > 0)
+                {
+                    <div class="box-body table-responsive">
+
+                        <table class="table table-hover dataTable dataTables_sizing">
+                            <thead>
+                                <tr>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>
+                                        Descrição
+                                    </th>
+                                    <th>
+                                        Professor
+                                    </th>
+                                    <th>
+                                        Total de Alunos
+                                    </th>
+                                    <th style="text-align:center;">
+                                        Status
+                                    </th>
+                                    <th style="text-align:center;">Ação</th>
+                                </tr>
+
+                            </thead>
+                            @{ int i = Model.FirstItemOnPage - 1;
+
+                                foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@(i = (i + 1)).</td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Descricao) - @Html.DisplayFor(modelItem => item.Curso.CursoNome)<br />
+                                            <small>
+                                                <b>Horário: </b> @Html.DisplayFor(modelItem => item.Horario) - <b>Início:</b> @item.DataInicio.Value.ToShortDateString() -
+                                                <b>Término:</b> @item.DataFim.Value.ToShortDateString()
+                                            </small>
+                                        </td>
+                                        <td>
+                                            @item.Funcionario.NomeCompleto.ToUpper()
+
+                                        </td>
+
+                                        <td style="text-align:center;">
+
+                                            @{int TotalMatriculas = 0;}
+                                            @foreach (var item2 in (List<Matricula>)ViewBag.lMatricula)
+                                            {
+                                                if (item2.Turma.Idturma == item.Idturma)
+                                                {
+
+                                                    TotalMatriculas = TotalMatriculas + 1;
+                                                }
+                                            }
+                                            @TotalMatriculas
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <small>
+                                                @if (item.Status == true)
+                                                { Write("ATIVA"); }
+                                                else
+                                                { Write("FINALIZADA"); }
+                                            </small>
+                                        </td>
+                                        <td style="text-align:center; width: 100px;">
+                                            <a href="@Url.Action("Matriculas", "Matricula", new { id = item.Idturma })"><img src="~/Content/img/editar.png" alt="Editar" /></a>
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+
+                        </table>
+
+                        <div class="box-footer clearfix">
+                            <div class="row">Listando de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount</div>
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { pagina = page, strCriterioTurma = ViewBag.strCriterioTurma, strCriterioStatus = ViewBag.strCriterioStatus, strCriterioProfessor = ViewBag.strCriterioProfessor, strCriterioCurso = ViewBag.strCriterioCurso}))
+                        </div>
+                    </div>
+                }
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>

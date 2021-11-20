@@ -1,0 +1,110 @@
+﻿@model SDE_FIC.Models.Turma
+
+@{
+    ViewBag.Title = "PDF";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+
+}
+
+    <section class="content-header">
+        <h1>
+            Relatório em @{@ViewBag.Title}s
+            <small>Gerar relatórios de Fechamento em PDF</small>
+        </h1>
+    </section>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                @{var itemTurma = ViewBag.Turma as SDE_FIC.Models.Turma;}
+
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = itemTurma.Idturma })">@itemTurma.Descricao</a> - @itemTurma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @itemTurma.Horario - <b>Início:</b> @itemTurma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @itemTurma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-solid box-primary">
+                                <div class="box-header with-border">
+                                    <h2 class="box-title">Gerar Relatório em PDF</h2>
+                                </div>
+                                <div class="box-body">
+                                    @using (Html.BeginForm())
+                                    {
+
+                                        int idturma = ViewBag.turma_idturma;
+                                        @Html.Hidden("Turma.Idturma", idturma)
+                                        @Html.Hidden("id", idturma)
+                                    <div class="form-group">
+
+
+
+                                        <label>Unidade Curricular:</label><br />
+                                            @Html.DropDownList("IdUnidadeCurricular", ViewBag.unidadecurricular_idunidadecurricular as SelectList, "Fechamento", new { @class = "form-control"  })
+
+
+
+
+
+                                        
+                                    </div>
+                                    <div class="box-footer">
+                                        <button class="btn btn-success " type="submit">Gerar PDF</button>
+
+                                    </div>
+
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+                </div>
+
+                <div class="box-footer clearfix">
+                    <div class="alert alert-success">
+                        <small><b>Obs:</b> As Frequências/Conteúdos e Notas, devem estar preenchidas para que o Relatório seja emitido corretamente.       </small>
+                    </div>
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    </div>
+</section>
+

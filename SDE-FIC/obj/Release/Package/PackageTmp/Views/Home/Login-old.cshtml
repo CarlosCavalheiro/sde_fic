@@ -1,0 +1,86 @@
+﻿@model SDE_FIC.Models.Usuario
+
+@{
+    ViewBag.Title = "SDE - FIC";
+    Layout = null;
+}
+<link href="~/Content/css/login.css" rel="stylesheet" />
+
+<div id="container">
+    
+     @using (Html.BeginForm("Login", "Home", FormMethod.Post, new {@class="form-signin"}))
+          { 
+              @Html.AntiForgeryToken()
+         <div  style="text-align:center" >
+         <img src="~/Content/img/sde_logo.png"/>
+
+          <h2 class="form-signin-heading">Sistema de Diário Escolar</h2>
+
+         </div>
+              if (ViewBag.msg_Error == null)
+              { 
+                <br />
+                <div class="alert alert-success">
+                    <p style="text-align:center;">@ViewBag.Message</p>
+                </div>
+              }
+              else
+              {
+                <div class="msg_error">
+                <p style="text-align:center; color:#B40404; font-size: 12pt;"><b>@ViewBag.msg_Error</b></p>
+                <p style="text-align:center;">@ViewBag.Message</p>
+                </div>
+              }
+                
+                <br />
+         
+         <table border="0" style="width:450px; border:0px; border-color:red; border-style: solid; margin: 0 auto 0 auto;">
+             <tr>
+                 <td>
+                    @Html.TextBoxFor(a => a.Username, new { @type = "text", @class = "input-block-level", @placeholder = "Usuário"})
+                     <br />
+                    @Html.PasswordFor(a => a.Password, new { @type = "password", @class = "input-block-level", @placeholder = "Senha" })               
+                 </td>
+                 <td Rowspan="2" style="text-align: center; vertical-align:top;">
+
+                    <button class="btn btn-primary btn-login" type="submit">Acessar</button>
+                 </td>
+                            
+             </tr>
+             <tr>
+               <td colspan="2"> 
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me"> Lembrar senha
+                </label>
+                   <br />
+                   <div class="alert" style="width:400px; text-align:center;">
+                       <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=3qZIQdENBE2kxXjjdOT21vCZgPJxaSpMp5TDGo8XyRZUOEpHVldCUE9WVUEyMFowWFBHQURRVU5BRi4u">Preecher Avaliação de Satisfação</a>
+                   </div>
+                </td>
+             </tr>
+            <tr>
+               <td colspan="2" style="width:450px;">                    
+                </td>
+             </tr>
+             
+          </table>
+         
+         }
+
+   
+</div>
+
+@if (TempData["Erro"] == "0")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Success.cshtml")
+     <script type="text/javascript">
+         $('#myModal').modal('show');
+    </script>
+}else if(TempData["Erro"] == "1")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Error.cshtml")
+    <script type="text/javascript">
+        $('#myModal').modal('show');
+    </script>
+}
+

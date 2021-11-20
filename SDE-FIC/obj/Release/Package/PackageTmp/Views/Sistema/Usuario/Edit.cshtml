@@ -1,0 +1,89 @@
+﻿@model SDE_FIC.Models.Usuario
+
+@{
+    ViewBag.Title = "Usuário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s        
+        <small>Editar Usuário</small>
+    </h1>
+</section>
+<section class="content">
+        <div class="box box-primary">
+
+            <div class="box-body">
+                        @using (Html.BeginForm()) {                            
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.IdUsuario)
+
+                                <div class="form-group">
+                                    <label>Nome Completo</label>
+ 
+                                    @Html.TextBoxFor(model => model.NomeCompleto, null, new { @class = "form-control" } )
+                                    @Html.ValidationMessageFor(model => model.NomeCompleto, "", new { @class = "text-danger" })
+                                </div>
+                
+                                <div class="form-group">
+                                    <label>Perfil</label>
+
+                                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                    {
+                                        @Html.DropDownListFor(model => model.Perfil, new SelectList(
+                                              new List<Object>{
+                                                               new { value = "professor" , text = "Professor"  },
+                                                               new { value = "secretaria" , text = "Secretaria"  },
+                                                               new { value = "coordenador" , text = "Coordenador" },
+                                                              }, "value", "text"), new { @class = "form-control"});
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Perfil, new { @class = "form-control", @Disabled = true});
+                                    }
+
+
+                                    @Html.ValidationMessageFor(model => model.Perfil, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Usuário</label>
+
+                                    @if (Session["LogedUserPerfil"].ToString() != "professor")
+                                    {
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @Disabled = true })
+
+                                    }
+                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label><b>Senha</b></label>
+
+                                    @Html.PasswordFor(model => model.Password, new { @value = Model.Password.ToString(), @class = "form-control" } )
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+
+                                    //if (@Session["LogedUserPerfil"].ToString() == "coordenador")
+                                    //  {
+                                    <div class="box-footer">
+                                        <input type="submit" value="Salvar" class="btn btn-success" id="btnSubmit" />
+                                        <!--<a href="/Usuario/Create" class="btn btn-default pull-right">Limpar</a>-->
+                                    </div>   
+                                    //}
+                                 }
+
+
+            </div>
+                      
+                </div>                  
+
+        </div>
+</section>
+

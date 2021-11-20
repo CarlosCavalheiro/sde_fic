@@ -1,0 +1,192 @@
+﻿@model SDE_FIC.Models.Diario
+
+@{
+    ViewBag.Title = "Diário";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    var x = 0;
+}
+
+
+<section class="content-header">
+    <h1>
+        Lançamento @{@ViewBag.Title}s
+        <small>Controle de Frequências, Conteúdos e Notas</small>
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = Model.Turma.Idturma })">@Model.Turma.Descricao</a> - @Model.Turma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample"  data-target="#collapseExample" >
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
+
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close"></i></a>
+
+                            </div>
+
+
+                        </div>
+                        
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="box box-solid box-success">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Alunos Matriculados</h3>
+                                </div>
+                                <div class="box-body">
+                                    @{int NAluno = 0;
+                                        for (int i = 0; i < Model.Turma.ListaMatriculas.Count(); i++)
+                                        {
+                                            NAluno = i + 1;
+                                            if (Model.Turma.ListaMatriculas[i].Situacao == "Evadido")
+                                            {
+
+                                                <div>@NAluno) - <i class="fa fa-close text-red"></i> <strike>@Model.Turma.ListaMatriculas[i].Aluno.Nome</strike> *@Model.Turma.ListaMatriculas[i].DataSituacao.ToShortDateString()</div>
+                                            }
+                                            else
+                                            {
+                                                <div>
+                                                    @NAluno) - <i class="fa fa-check text-green"></i>
+                                                @Model.Turma.ListaMatriculas[i].Aluno.Nome
+                                                @if (Model.Turma.ListaMatriculas[i].listaAproveitamentos.Count() > 0)
+                                                {
+                                                    Write("(");
+                                                    foreach (var a in Model.Turma.ListaMatriculas[i].listaAproveitamentos)
+                                                    {
+                                                        Write("*" + a.UnidadeCurricular.Sigla.ToString());
+                                                    }
+                                                    Write(")");
+                                                }
+
+                                            </div>
+
+                                        }
+
+                                    }
+                                    }
+
+                                </div>
+                                <div class="box-footer">
+                                    <div><i class="fa fa-check text-green"></i> Alunos Ativos</div>
+                                    <div><i class="fa fa-close text-red"></i> Alunos Evadidos</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="box box-solid box-warning">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Unidades Curriculares</h3>
+                                </div>
+                                <div class="box-body">
+                                    @{int NUnidade = 0;
+                                        for (int i = 0; i < Model.Turma.Curso.lUnidadesCurriculares.Count(); i++)
+                                        {
+                                            NUnidade = i + 1;
+                                            <div>
+                                                @NUnidade) @Model.Turma.Curso.lUnidadesCurriculares[i].CargaHoraria h - @Model.Turma.Curso.lUnidadesCurriculares[i].Descricao
+                                            </div>
+
+                                        }
+                                    }
+                                </div>
+                                <div class="box-footer">
+                                    <div>@Model.Turma.Curso.CargaHoraria h - Carga Horária Total</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="box box-solid box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Resumo Quantitativo</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body text-center">
+                                    <div class="progress vertical">
+                                        @{
+                                            float TotalMatriculas = Model.Turma.ListaMatriculas.Count();
+                                            float TotalEvadidos = Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Evadido").Count();
+                                            float TotalAtivos = Model.Turma.ListaMatriculas.Where(item => item.Situacao == "Ativo").Count();
+                                            float PercentualMatriculas = ((TotalMatriculas / TotalMatriculas) * 100);
+                                            float PercentualEvadidos = ((TotalEvadidos / TotalMatriculas) * 100);
+                                            float PercentualAtivos = ((TotalAtivos / TotalMatriculas) * 100);
+
+
+                                        }
+                                        <div class="progress-bar progress-bar-yellow" role="progressbar" aria-valuenow="@TotalMatriculas" aria-valuemin="0" aria-valuemax="@TotalMatriculas" style="height: @Convert.ToInt32(PercentualMatriculas)%">
+                                            <span class="sr-only">@TotalMatriculas</span>
+                                        </div>
+                                    </div>
+                                    <div class="progress vertical">
+                                        <div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="@TotalEvadidos" aria-valuemin="0" aria-valuemax="@TotalMatriculas" style="height: @Convert.ToInt32(PercentualEvadidos)%">
+                                            <span class="sr-only">@TotalEvadidos</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="progress vertical">
+                                        <div class="progress-bar progress-bar-green" role="progressbar" aria-valuenow="@TotalAtivos" aria-valuemin="0" aria-valuemax="@TotalMatriculas" style="height: @Convert.ToInt32(PercentualAtivos)%">
+                                            <span class="sr-only">@TotalAtivos</span>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- /.box-body -->
+                                </div>
+                                <div class="box-footer" style="text-align:center;">
+                                    <i class="fa fa-circle-o text-yellow"></i> @TotalMatriculas - Matriculados &nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-circle-o text-red"></i> @TotalEvadidos - Evadidos&nbsp;&nbsp;&nbsp;
+                                    <i class="fa fa-circle-o text-green"></i> @TotalAtivos - Ativos
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                  
+                </div>
+
+                <div class="box-footer clearfix">
+
+                </div>
+                <!---Fim DATATABLE -->
+                <!--FIM CONTEUDO-->
+            </div>
+        </div>
+    
+
+     </div>
+    
+
+</section>
+

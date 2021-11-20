@@ -1,0 +1,88 @@
+﻿@model SDE_FIC.Models.Aluno
+
+@{
+    ViewBag.Title = "Aluno";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";        
+}
+
+
+<legend><h2>Cadastro Geral de @{@ViewBag.Title}s (Todos os Alunos do Sistema)</h2>
+<h5>
+    @Html.ActionLink("Novo Aluno", "Create") |   @Html.ActionLink("Voltar para Listagem", "Index")</h5>
+</legend>
+
+@*@using (Html.BeginForm()) {
+   <table style="width:200px; position: absolute; margin: -52px 100px;">
+    <tr style="vertical-align:top;">
+        <td></td>
+        <td>@Html.TextBox("strCriterio", null , new { style = "width: 150px; height: 15px; font-size: 12px;", @placeholder = "Aluno"})</td>
+        <td><input type="submit" value="Filtrar" class="btn btn-sucsess btn-small" style="height:24px;"/></td>
+    </tr>
+</table>    
+}*@
+
+<h3>Atenção</h3>
+<div class="alert alert-success">
+<h5>@Html.ActionLink("Clique Aqui","ModeloImportarAlunos") para baixar arquivo modelo para importação</h5>
+ </div>
+@using (Html.BeginForm("Upload", "Aluno", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+   <div class="form-horizontal">
+
+       @*Html.Raw(ViewBag.Error)*@
+
+       <table cellpading="2" cellspacing="2" border="1" class="table table-bordered">
+            <tr><td>
+        <h5>1. Escolha o arquivo: <input type="file" id="excelfile" class="btn-default" name="excelfile" required data-val="true"/></h5>
+
+       
+        <h5>2. Clique em Importar <input type="submit" id="Submit" class="btn btn-default" value="Importar" title="Clique para fazer o upload de arquivos" />
+        <h5 class="alert alert-error">Obs: Não será possível desfazer a operação!</h5>
+                </td>
+                </tr>
+            </table>
+   </div>
+}
+    <div>
+        <h3>Lista dos Alunos Importados</h3>
+        <table cellpading="2" cellspacing="2" border="1" class="table table-bordered table-hover">
+            <tr>
+                <th>Data</th>
+                <th>Nome</th>
+                <th>Telefone Res</th>
+                <th>Telefone Cel</th>
+                <th>Email</th>
+                <th>Obs</th>
+                <th>CPF</th>
+
+            </tr>
+           @foreach (var aluno in ViewBag.listarAlunos) { 
+            <tr>
+                <td>@aluno.DataCadastro</td>
+                <td>@aluno.Nome</td>
+                <td>@aluno.TelefoneResidencial</td>
+                <td>@aluno.TelefoneCelular</td>
+                <td>@aluno.Email</td>
+                <td>@aluno.Observacao</td>
+                <td>@aluno.CPF</td>
+            </tr>
+            
+            }
+
+        </table>
+
+    </div>
+
+@if (TempData["Erro"] == "0")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Success.cshtml")
+     <script type="text/javascript">
+         $('#myModal').modal('show');
+    </script>
+}else if(TempData["Erro"] == "1")
+{
+    @Html.Partial("~/Views/Sistema/_Mensagem_Error.cshtml")
+    <script type="text/javascript">
+        $('#myModal').modal('show');
+    </script>
+}

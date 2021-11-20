@@ -1,0 +1,177 @@
+﻿@model SDE_FIC.Models.Turma
+
+@{
+    ViewBag.Title = "Turma";
+    Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+}
+
+
+<section class="content-header">
+    <h1>
+        Cadastro de @{@ViewBag.Title}s
+        <small>Editar @{@ViewBag.Title}</small>
+    </h1>
+</section>
+<section class="content">
+    <div class="box box-primary">
+        @using (Html.BeginForm())
+        {
+            <div class="box-header with-border">
+                <div class="pull-right">
+                    <a href="~/Turma" class="link-black"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="box-body">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Idturma)
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label>Nº da Proposta (xxx/ano)</label>
+                        @Html.TextBoxFor(model => Model.PropostaAno, null, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label>Local de Realização</label><font color="red">*</font>
+                        @Html.TextBoxFor(model => Model.LocalRealizacao, null, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label>Atendimento</label><font color="red">*</font>
+                        @Html.TextBoxFor(model => Model.Atendimento, null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Responsável</label><font color="red">*</font>
+                        @Html.TextBoxFor(model => Model.Responsavel, null, new { @class = "form-control" })
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Cliente</label><font color="red">*</font>
+                        @Html.TextBoxFor(model => Model.Cliente, null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Descrição da Turma</label> <font color="red">*</font>
+                        @Html.TextBoxFor(model => model.Descricao, null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Horário</label><font color="red">*</font>
+                        @Html.TextBoxFor(model => model.Horario, null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Início Previsto</label> <font color="red">*</font>
+                        @Html.EditorFor(model => model.DataInicio, null, new { @class = "form-control", @style = "" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Término Previsto</label> <font color="red">*</font>
+                        @Html.EditorFor(model => model.DataFim, null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Curso</label> <font color="red">*</font>
+                        @Html.DropDownListFor(model => Model.Curso.IdCurso, ViewBag.curso_idcurso as SelectList, "", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Horas Aula</label> <font color="red">*</font>
+                        @Html.TextBoxFor(model => Model.HorasAula, new { step = "0.5", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>Professor</label> <font color="red">*</font>
+                        @if (Session["LogedUserPerfil"].ToString() != "professor")
+                        {
+                            @Html.DropDownListFor(model => Model.Funcionario.IdFuncionario, ViewBag.funcionario_idfuncionario as SelectList, "", new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(model => Model.Funcionario.IdFuncionario)
+                            <div>@Model.Funcionario.NomeCompleto.ToString()</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label>Dias da Semana</label><br />
+
+
+                        @Html.CheckBoxFor(model => model.Segunda)
+                        <label>Seg</label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                        @Html.CheckBoxFor(model => model.Terca)
+                        <label>Ter</label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @Html.CheckBoxFor(model => model.Quarta)
+                        <label>Qua</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @Html.CheckBoxFor(model => model.Quinta)
+                        <label>Qui</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @Html.CheckBoxFor(model => model.Sexta)
+                        <label>Sex</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @Html.CheckBoxFor(model => model.Sabado)
+                        <label>Sáb</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        @Html.CheckBoxFor(model => model.Domingo)
+                        <label>Dom</label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="form-group col-md-6">
+                        @if (Model.Status == true)
+                        {
+                            <b>Status da Turma (Ativa)<br /></b> @*<label>Desative para FECHAR</label>*@
+                            @Html.CheckBoxFor(model => model.Status, new { @checked = true })
+
+                        }
+                        else
+                        {
+                            <b>Status da Turma (Finalizada)<br /></b>
+                            <label>Clique para Ativar</label>
+                            @Html.CheckBoxFor(model => model.Status, new { @checked = true })
+
+                        }
+
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <font color="red">
+                            @Html.ValidationMessageFor(model => model.Status)
+                            @Html.ValidationMessageFor(model => model.HorasAula)
+                            @Html.ValidationMessageFor(model => model.Curso.IdCurso)
+                            @Html.ValidationMessageFor(model => model.Funcionario.IdFuncionario)
+                            @Html.ValidationMessageFor(model => model.DataFim)
+                            @Html.ValidationMessageFor(model => model.DataInicio)
+                            @Html.ValidationMessageFor(model => model.Horario)
+                            @Html.ValidationMessageFor(model => model.Descricao)
+                            @Html.ValidationMessageFor(model => model.Responsavel)
+                            @Html.ValidationMessageFor(model => model.Atendimento)
+                            @Html.ValidationMessageFor(model => model.Cliente)
+                            @Html.ValidationMessageFor(model => model.PropostaAno)
+                            @Html.ValidationMessageFor(model => model.LocalRealizacao)
+                        </font>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="footer col-md-12">
+                        <input type="submit" value="Salvar" class="btn btn-success" id="btnSubmit" />
+                        <a href="/Turma/Create" class="btn btn-default pull-right">Limpar</a>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+    </div>
+</section>
