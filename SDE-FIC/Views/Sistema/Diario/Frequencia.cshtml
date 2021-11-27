@@ -177,31 +177,19 @@
                                                                         }
                                                                         else
                                                                         {
-                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca );}</b>
+                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca);}</b>
                                                                         }
-
-                                                                         @*@if (item.Frequencias[f].Presenca == "P")
-                                                                        {
-                                                                            <b style="color:blue;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }
-                                                                        else if (item.Frequencias[f].Presenca == "A")
-                                                                        {
-                                                                            <b style="color:Red;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }*@
 
                                                                     </td>
 
-                                                                    nVerifica = 2;
-                                                                }
-
+                                                                        nVerifica = 2;
+                                                                    }                                                                
                                                             }
+
                                                             if (nVerifica == 0)
                                                             {
-                                                                <td>&nbsp;<i class="fa fa-plus-circle"></i></td>
+                                                                //@Url.Action("FrequenciaIndividual", "Diario", new { idMatricula = lMatriculas[i].IdMatricula, idDiario = item.IdDiario})
+                                                                <td>&nbsp;<button onclick="LancamentoIndividual(@item.IdDiario,  @lMatriculas[i].IdMatricula, @item.HoraAulaDia);"><i class="fa fa-plus-circle"></i></button></td>
                                                             }
                                                         }
                                                     }
@@ -235,10 +223,44 @@
 
 
     </div>
-
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
 </section>
 
+<script type="text/javascript">
+    function LancamentoIndividual (idDiario, idMatricula, horaAulaDia) {
+           
+        console.log("OK", idDiario, idMatricula, horaAulaDia);
+
+        var Dados = {
+            idDiario: idDiario,
+            idMatricula: idMatricula,
+            horaAulaDia: horaAulaDia
+
+        };  
+        $.ajax({
+            type: "POST",
+            url: "/Diario/LancamentoIndividual",
+            data: JSON.stringify(Dados),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                alert(data.msg);
+                $('.alert').alert()
+            },
+            error: function () {
+                alert("Error occured!!")
+            }
+        });  
+
+    }
+
+</script>
 
 
 

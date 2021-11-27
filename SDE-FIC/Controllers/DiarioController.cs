@@ -2786,6 +2786,34 @@ namespace SDE_FIC.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult LancamentoIndividual(long idMatricula, long idDiario, decimal horaAulaDia)
+        {
+            try
+            {
+
+                Frequencia prot = new Frequencia();
+                FrequenciaDAO frequenciaDAO = new FrequenciaDAO(ref _db);
+                DiarioDAO _diarioDAO = new DiarioDAO(ref _db);
+                MatriculaDAO matriculaDAO = new MatriculaDAO(ref _db);
+
+                prot.Diario = _diarioDAO.LoadById((int)idDiario);
+                prot.HoraAula = horaAulaDia;
+                prot.Matricula = matriculaDAO.LoadById(idMatricula);
+                prot.Presenca = "P";
+
+                frequenciaDAO.Insert(ref prot, idDiario);
+
+                return Json(new
+                {
+                    msg = "Lançamento Realizado! "
+                });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         //
         // GET: /Diario/ConteudoEditar
         public ActionResult LancamentoEditar(int id = 0, int mostrarConteudo = 0, int idDiario = 0, int strCriterio = 0, int strCriterioAnterior = 0)
