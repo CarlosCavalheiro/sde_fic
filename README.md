@@ -4,16 +4,10 @@
 Aplicação web que permite um controle de frequência, conteúdo de aulas, lançamento de notas, cadastro de turmas, cadastro de acessos, e relatórios;
 
 ## TECNLOGIAS
-
 - HTML/CSS/JAVASCRIPT
-
 - Bootstrap
-
 - C# .NET (MVC)
-
 - MySQL
-
-  
 
 ## FUNÇÕES DA APLICAÇÃO
 - [x] Cadastro de Acessos
@@ -26,26 +20,14 @@ Aplicação web que permite um controle de frequência, conteúdo de aulas, lan�
 - [x] Emissão de relatórios em PDF;
 
 ## TELAS DA APLICAÇÃO
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde1.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde2.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde3.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde4.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde5.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde6.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde7.PNG" style="zoom:50%;" />
-
-<img src="A:\Desenvolvimento\curriculo\images\projeto1\sde8.PNG" style="zoom:50%;" />
-
-
-
-
+<img src="./Artes/sde1.PNG" style="zoom:50%;" />
+<img src="./Artes/sde2.PNG" style="zoom:50%;" />
+<img src="./Artes/sde3.PNG" style="zoom:50%;" />
+<img src="./Artes/sde4.PNG" style="zoom:50%;" />
+<img src="./Artes/sde5.PNG" style="zoom:50%;" />
+<img src="./Artes/sde6.PNG" style="zoom:50%;" />
+<img src="./Artes/sde7.PNG" style="zoom:50%;" />
+<img src="./Artes/sde8.PNG" style="zoom:50%;" />
 
 ## DESENVOLVEDOR
 
