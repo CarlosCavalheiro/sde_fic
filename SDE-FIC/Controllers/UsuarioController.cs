@@ -150,7 +150,7 @@ namespace SDE_FIC.Controllers
             {
                 this.Danger(string.Format("Falha ao Alterar Registro! Verifique se os campos estão preenchidos."));
             }
-            return View("~/Views/Sistema/Usuario/Create.cshtml", usuario);
+            return View("~/Views/Sistema/Usuario/Edit.cshtml", usuario);
 
 
 

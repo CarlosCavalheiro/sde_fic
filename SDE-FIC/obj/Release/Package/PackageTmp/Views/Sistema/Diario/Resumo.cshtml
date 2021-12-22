@@ -132,7 +132,9 @@
                                 </div>
                                 <!-- /.box-header -->
                                 <div class="box-body">
-                                    @if (Model.Turma.Diario.LastOrDefault() != null)
+                                @if(Model.Turma.Diario.Count() > 0)
+                                {
+                                    if (Model.Turma.Diario.LastOrDefault() != null)
                                     {
 
                                         <p>Data: @Model.Turma.Diario.LastOrDefault().Data.ToShortDateString()</p>
@@ -146,10 +148,17 @@
 
                                         }
                                     }
-                                    @if (Model.Turma.Diario.LastOrDefault().Frequencias.Where(item => item.Presenca == "A").Count() == 0)
+                                    if (Model.Turma.Diario.LastOrDefault().Frequencias.Where(item => item.Presenca == "A").Count() == 0)
                                     {
                                         <p>Nenhuma Falta</p>
                                     }
+                                }
+                                else
+                                {
+                                        <p>Nenhuma Lançamento realizado!</p>
+
+                                }
+                                   
                                 </div>
                                 <!-- /.box-body -->
                             </div>

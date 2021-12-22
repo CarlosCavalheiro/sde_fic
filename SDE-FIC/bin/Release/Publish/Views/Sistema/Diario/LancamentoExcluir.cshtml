@@ -2,98 +2,167 @@
 @model SDE_FIC.Models.Diario
 
 
+
 @{
     ViewBag.Title = "Diário";
     Layout = "~/Views/Shared/_Layout_Sistema.cshtml";
+    var x = 0;
 }
-<h2>@ViewBag.Title de Turma > Editar > Lançamento</h2>
 
-<legend><h5>
-    Turma: <a href="@Url.Action("Turma", "Diario", new { id = ViewBag.turma_idturma }, null)">@ViewBag.turma_descricao</a>  <br />
-    @Html.ActionLink("Novo Lançamento", "LancamentoNovo", new { id=ViewBag.turma_idturma }, "Diario") |
-    @Html.ActionLink("Conteúdos", "Conteudo", new { id=ViewBag.turma_idturma }, "Diario") | 
-    @Html.ActionLink("Frequências", "Frequencia", new { id=ViewBag.turma_idturma }, "Diario") |  
-    @Html.ActionLink("Notas", "Notas", new { id=ViewBag.turma_idturma }, "Diario") |
-    @Html.ActionLink("Aproveitamentos", "Aproveitamentos", new { id=ViewBag.turma_idturma }, "Diario") |
-    @Html.ActionLink("Relatório(PDF)", "GerarPDF", new { id=ViewBag.turma_idturma }, "Diario") |  
-    @Html.ActionLink("Meus Diários", "Index", "Diario")
 
-   </h5> </legend>
+<section class="content-header">
+    <h1>
+        Excluir Lançamento de @{@ViewBag.Title}
+        <small>Controle de Frequências, Conteúdos e Notas</small>
+    </h1>
+</section>
 
-<div style="width: 920px; height:100px; float: left; border: 1px solid gray; padding: 5px; margin: 0px; border-radius: 4px; background-color: #f5bbbb;">
-    <h3>Tem certeza de que deseja APAGAR o Lançamento?</h3>
-    <h5>Todas as informações de frequencia registrados para este dia no diário serão removidas!</h5>
-</div>
+<section class="content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-success">
+                <!---INICIO CONTEUDO-->
+                <!---TOPO -->
+                <div class="box-header no-padding ">
+                    <div class="box box-success collapsed-box">
+                        <div class="box-header with-border">
+                            <div class="col-sm-10">
+                                <h4>Turma: <a href="@Url.Action("Turma", "Diario", new { id = Model.Turma.Idturma })">@Model.Turma.Descricao</a> - @Model.Turma.Curso.CursoNome</h4>
+                                <small>
+                                    <b>Horário: </b> @Model.Turma.Horario - <b>Início:</b> @Model.Turma.DataInicio.Value.ToShortDateString() -
+                                    <b>Término:</b> @Model.Turma.DataFim.Value.ToShortDateString()
+                                </small>
+                            </div>
 
-@using (Html.BeginForm()) {
-        int idturma = ViewBag.turma_idturma; 
-        @Html.Hidden("IdTurma", idturma)
-        @Html.HiddenFor(model => Model.IdDiario)
+                            <!--Botão + -->
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool btn-default" data-toggle="collapse" data-widget="collapseExample" data-target="#collapseExample">
+                                    <i class="fa fa-plus"></i> OPÇÕES
+                                </button>
 
-         int strcriterio = ViewBag.strCriterio;
-         int strcriterioanterior = ViewBag.strCriterioAnterior;
-        @Html.Hidden("strCriterio", strcriterio)
-        @Html.Hidden("strCriterioAnterior", strcriterioanterior)
+                                <a href="~/Diario" class="link-black">&nbsp;&nbsp;&nbsp;<i class="fa fa-close" data-toggle="modal" data-target="#modal-carregando"></i></a>
 
-    <div style="width: 430px; float: left; margin-top: 20px;">
-        <h5>Lançamento de Conteúdo </h5> 
-        <b>Data:</b> @Model.Data.ToShortDateString()
-        <br />
+                            </div>
 
-        <b>Unidade Curricular: </b>
-        @Html.HiddenFor(model => Model.IdUnidadeCurricular)
-        @Html.DisplayFor(model => Model.UnidadeCurricular.Descricao)
-        <br />
-        <b>Conteúdo Formativo: </b>
-        @Html.DisplayFor(model => Model.Conteudo, new { @style = "width: 400px; height:80px;"})
-        <br />
-        <b>Ocorrência</b>
-        @Html.DisplayFor(model => Model.Ocorrencia, new { @style = "width: 400px; height:80px;" })
+                        </div>
 
+                        <!-- Corpo da Caixa de Ferramentas -->
+                        @{Html.RenderPartial("../../Views/Sistema/Diario/OpFerramentas");}
+
+                    </div>
+
+                </div>
+                <!---FIM TOPO -->
+                <!--Inicio MEIO-->
+                 @using (Html.BeginForm()) 
+                            {
+                                    int idturma = ViewBag.turma_idturma; 
+                                    @Html.Hidden("IdTurma", idturma)
+                                    @Html.HiddenFor(model => Model.IdDiario)
+
+                                    int strcriterio = ViewBag.strCriterio;
+                                    int strcriterioanterior = ViewBag.strCriterioAnterior;
+                                    @Html.Hidden("strCriterio", strcriterio)
+                                    @Html.Hidden("strCriterioAnterior", strcriterioanterior)
+
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="alert alert-danger">
+                                                    <h4><i class="fa fa-trash"></i> ATENÇÃO</h4>
+                                                    <P>Todo o conteúdo desse apontamento será APAGADO!</P>
+                                                    <p>Esse processo não poderá ser desfeito.</p>
+                                                </div>
+                                            </div>
+                                        </div>                                       
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="box box-solid box-info">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">Conteúdo</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <h5>Lançamento de Conteúdo </h5> 
+                                                        <b>Data:</b> @Model.Data.ToShortDateString()
+                                                        <br />
+
+                                                        <b>Unidade Curricular: </b>
+                                                        @Html.HiddenFor(model => Model.IdUnidadeCurricular)
+                                                        @Html.DisplayFor(model => Model.UnidadeCurricular.Descricao)
+                                                        <br />
+                                                        <b>Conteúdo Formativo: </b>
+                                                        @Html.DisplayFor(model => Model.Conteudo, new { @style = "width: 400px; height:80px;"})
+                                                        <br />
+                                                        <b>Ocorrência</b>
+                                                        @Html.DisplayFor(model => Model.Ocorrencia, new { @style = "width: 400px; height:80px;" })
+
+                                                    </div>
+                                                    <div class="box-footer">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="box box-solid box-success">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">Lançamento de Frequência</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <table class="table table-bordered table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Aluno
+                                                                    </th>
+                                                                    <th>Presença
+                                                                    </th>
+                                                                    <th>Horas Aula
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            @for (var i = 0; i < Model.Frequencias.Count; i++)
+                                                            {
+                                                            
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="width: 300px;">
+                                                                                                @Html.HiddenFor(m => Model.Frequencias[i].IdFrequencia)
+                                                                                                @Model.Frequencias[i].Matricula.Aluno.Nome.ToUpper() 
+                                                                                                @Html.HiddenFor(m => Model.Frequencias[i].Matricula.IdMatricula)
+                                                                        </td>
+                                                                        <td style="text-align: center;">
+                                                                                                        @*@Html.DropDownListFor(m => Model.Frequencias[i].Presenca, new SelectList(
+                                                                                                                new List<Object>{ 
+                                                                                                                new { value =  "P" , text =  "P"  },
+                                                                                                                new { value =  "A" , text =  "A"  },
+                                                                                                                new { value =  "TE" , text =  "TE"  },
+                                                                                                                new { value =  "TS" , text =  "TS"  },
+                                                                                
+                                                                                                },"value","text"), null, new { @class = "Presenca" })*@
+                                                                                                    @Html.DisplayFor(m => Model.Frequencias[i].Presenca)
+                                                                        </td>
+                                                                        <td style="text-align: center;">@Html.DisplayFor(m => Model.Frequencias[i].HoraAula, new { @class = "HoraAula", @type = "number", @style = "height: 20px; padding: 2px 2px; margin-bottom: 0px; font-size: 10px; line-height: 20px;", Value = "4"})</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            }
+                                                        </table>
+                                                    </div> 
+                                                    <div class="box-footer"> 
+                                                        
+                                                    </div>
+                                                </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                            <div style="form-group">
+                                                <input type="submit" class="btn btn-danger " value="Excluir" />
+                                            </div>
+                                    </div>
+                                    </div>
+                            }
+            </div>
+            
+        </div>
     </div>
-    <div style="width: 490px; padding-left:5px; padding-right:5px; float: left; border:1px; border-style: solid; border-radius: 4px; border-color: #c0c0c0;  margin-top: 20px;">
-        <h5>Lançamento de Frequência</h5>
-        <table class="table table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Aluno
-                    </th>
-                    <th>Presença
-                    </th>
-                    <th>Horas Aula
-                    </th>
-                </tr>
-            </thead>
-            @for (var i = 0; i < Model.Frequencias.Count; i++)
-            {
-               
-                <tbody>
-                    <tr>
-                        <td style="width: 300px;">
-                                                  @Html.HiddenFor(m => Model.Frequencias[i].IdFrequencia)
-                                                  @Model.Frequencias[i].Matricula.Aluno.Nome.ToUpper() 
-                                                  @Html.HiddenFor(m => Model.Frequencias[i].Matricula.IdMatricula)
-                        </td>
-                        <td style="text-align: center;">
-                                                        @*@Html.DropDownListFor(m => Model.Frequencias[i].Presenca, new SelectList(
-                                                                new List<Object>{ 
-                                                                new { value =  "P" , text =  "P"  },
-                                                                new { value =  "A" , text =  "A"  },
-                                                                new { value =  "TE" , text =  "TE"  },
-                                                                new { value =  "TS" , text =  "TS"  },
-                                   
-                                                },"value","text"), null, new { @class = "Presenca" })*@
-                                                    @Html.DisplayFor(m => Model.Frequencias[i].Presenca)
-                        </td>
-                        <td style="text-align: center;">@Html.DisplayFor(m => Model.Frequencias[i].HoraAula, new { @class = "HoraAula", @type = "number", @style = "height: 20px; padding: 2px 2px; margin-bottom: 0px; font-size: 10px; line-height: 20px;", Value = "4"})</td>
-                    </tr>
-                </tbody>
-            }
-        </table>
-    </div> 
-    <div style="clear: both;"></div>
-    <div style="width: 100%;">
-        <input type="submit" class="btn btn-danger " value="Excluir" />
-    </div>
-}
+</section>
+
 

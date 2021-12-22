@@ -97,7 +97,7 @@
                             @{ 
                                 List<SDE_FIC.Models.Aluno> _lAlunos = ViewBag.listarAlunos;
 
-                                if (_lAlunos.Count() > 0)
+                                if (_lAlunos != null)
                                 {
                                                         <div class="box box-solid box-success">
                                                             <div class="box-header with-border">
@@ -144,7 +144,7 @@
                             @{ 
                                 List<SDE_FIC.Models.Aluno> _lAlunosErro = ViewBag.listarAlunosErro;
 
-                                if (_lAlunosErro.Count() > 0)
+                                if (_lAlunosErro != null)
                                 {
                                                         <div class="box box-solid box-danger">
                                                             <div class="box-header with-border">

@@ -188,7 +188,7 @@
                                                         </td>
 
 
-                                                        @if (Model.Frequencias[i].Matricula.Situacao == "Evadido")
+                                                        @*@if (Model.Frequencias[i].Matricula.Situacao == "Evadido")
                                                         {
                                                             <td style="text-align: center;">
                                                                 <b style="color:blue;">E</b>
@@ -199,7 +199,8 @@
                                                                 @Html.HiddenFor(m => Model.Frequencias[i].HoraAula, new { Value = 0 })
                                                             </td>
                                                         }
-                                                        else if (Model.Frequencias[i].Matricula.Situacao == "Desistente")
+                                                        else*@ 
+                                                        @if (Model.Frequencias[i].Matricula.Situacao == "Desistente")
                                                         {
                                                             <td style="text-align: center;">
                                                                 <b style="color:blue;">D</b>
@@ -223,6 +224,10 @@
                                                                         document.getElementById('Frequencias_@{@i}__Presenca').value = 'A';
                                                                         document.getElementById('Frequencias_@{@i}__HoraAula').value = '0,0';
                                                                     } else if (valor == 'A') {
+                                                                        document.getElementById('Frequencias_@{@i}').innerHTML = 'E';
+                                                                        document.getElementById('Frequencias_@{@i}__Presenca').value = 'E';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '0,0';
+                                                                    } else if (valor == 'E') {
                                                                         document.getElementById('Frequencias_@{@i}').innerHTML = 'TE';
                                                                         document.getElementById('Frequencias_@{@i}__Presenca').value = 'TE';
                                                                         document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
@@ -230,10 +235,10 @@
                                                                         document.getElementById('Frequencias_@{@i}').innerHTML = 'TS';
                                                                         document.getElementById('Frequencias_@{@i}__Presenca').value = 'TS';
                                                                         document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
-                                                                    } else if (valor == 'TS') {
+                                                                     } else if (valor == 'TS') {
                                                                         document.getElementById('Frequencias_@{@i}').innerHTML = 'R';
                                                                         document.getElementById('Frequencias_@{@i}__Presenca').value = 'R';
-                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';
+                                                                        document.getElementById('Frequencias_@{@i}__HoraAula').value = '@Model.Turma.HorasAula.ToString("0.0")';                                                                    
                                                                     } else {
                                                                         document.getElementById('Frequencias_@{@i}').innerHTML = 'P';
                                                                         document.getElementById('Frequencias_@{@i}__Presenca').value = 'P';

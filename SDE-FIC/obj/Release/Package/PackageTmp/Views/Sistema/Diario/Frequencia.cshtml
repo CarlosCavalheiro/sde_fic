@@ -121,91 +121,77 @@
 
                                             int nAluno = 0;
 
-
-
                                             for (int i = 0; i < lMatriculas.Count(); i++)
                                             {
                                                 int nVerifica = 0;
                                                 nAluno = nAluno + 1;
-                                                <tr>
-                                                    <td style="font-size: small;">
-                                                        @nAluno) @lMatriculas[i].Aluno.Nome.ToUpper()
-                                                        @if (lMatriculas[i].Situacao == "Evadido")
-                                                        {
-                                                            Write("*" + lMatriculas[i].DataSituacao.ToShortDateString());
-                                                        }
-                                                        @if (lMatriculas[i].Situacao == "Transferido (S)")
-                                                        {
-                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
-                                                        }
-                                                        @if (lMatriculas[i].Situacao == "Transferido (E)")
-                                                        {
-                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
-                                                        }
+                                                                                <tr>
+                                                                                    <td style="font-size: small;">
 
-                                                        @{
-                                                            int TotalAproveitamentos = lMatriculas[i].listaAproveitamentos.Count();
-                                                            string TxtAproveitamento = "";
-                                                            if (TotalAproveitamentos != 0)
-                                                            {
-                                                                for (int j = 0; j < TotalAproveitamentos; j++)
-                                                                {
-                                                                    TxtAproveitamento = TxtAproveitamento + "(" + lMatriculas[i].listaAproveitamentos[j].UnidadeCurricular.Sigla + ")";
-                                                                };
-                                                                Write("**" + TxtAproveitamento);
-                                                            }
-                                                        }
-                                                    </td>
-                                                    @{
-                                                        foreach (var item in Model)
-                                                        {
-                                                            for (int f = 0; f < item.Frequencias.Count(); f++)
-                                                            {
-                                                                if (lMatriculas[i].IdMatricula == item.Frequencias[f].Matricula.IdMatricula)
-                                                                {
+                                                                                        @nAluno) @lMatriculas[i].Aluno.Nome.ToUpper()
 
-                                                                    <td style="text-align:center; font-size: x-small;">
+                                                                                        @if (lMatriculas[i].Situacao == "Evadido")
+                                                                                        {
+                                                                                            Write("*" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                                                        }
+                                                                                        @if (lMatriculas[i].Situacao == "Transferido (S)")
+                                                                                        {
+                                                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                                                        }
+                                                                                        @if (lMatriculas[i].Situacao == "Transferido (E)")
+                                                                                        {
+                                                                                            Write("****" + lMatriculas[i].DataSituacao.ToShortDateString());
+                                                                                        }
 
+                                                                                        @{
+                                                                                            int TotalAproveitamentos = lMatriculas[i].listaAproveitamentos.Count();
+                                                                                            string TxtAproveitamento = "";
+                                                                                            if (TotalAproveitamentos != 0)
+                                                                                            {
+                                                                                                for (int j = 0; j < TotalAproveitamentos; j++)
+                                                                                                {
+                                                                                                    TxtAproveitamento = TxtAproveitamento + "(" + lMatriculas[i].listaAproveitamentos[j].UnidadeCurricular.Sigla + ")";
+                                                                                                };
+                                                                                                Write("**" + TxtAproveitamento);
+                                                                                            }
+                                                                                        }
+                                                                                    </td>
 
-                                                                        @if (item.Frequencias[f].Presenca == "P")
-                                                                        {
-                                                                            <b style="color:dodgerblue;">P</b>
-                                                                        }
-                                                                        else if (item.Frequencias[f].Presenca == "A")
-                                                                        {
-                                                                            <b style="color:Red;">A</b>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca );}</b>
-                                                                        }
+                                                                                    @{
+                                                                                        for (int j = 0; j < Model.Count(); j++)
+                                                                                        {
+                                                                                            for (int f = 0; f < Model[j].Frequencias.Count(); f++)
+                                                                                            {
+                                                                                                if (Model[j].Frequencias[f].Matricula.IdMatricula == lMatriculas[i].IdMatricula)
+                                                                                                {
+                                                                                                    <td style="text-align:center; font-size: small;"> 
+                                                                                                        @if(Model[j].Frequencias[f].Presenca == "P")
+                                                                                                            {
+                                                                                                                <b style="color:blue;">@Model[j].Frequencias[f].Presenca</b>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <b style="color:Red;">@Model[j].Frequencias[f].Presenca</b>
+                                                                                                            }
+                                                                                                        
+                                                                                                    </td>     
+                                                                                                    nVerifica = 1;
+                                                                                                }
+                                                                                            }
 
-                                                                         @*@if (item.Frequencias[f].Presenca == "P")
-                                                                        {
-                                                                            <b style="color:blue;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }
-                                                                        else if (item.Frequencias[f].Presenca == "A")
-                                                                        {
-                                                                            <b style="color:Red;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <b style="color:orange;">@{Write(item.Frequencias[f].Presenca + " (" + item.Frequencias[f].HoraAula + ")");}</b>
-                                                                        }*@
+                                                                                            if (nVerifica == 0)
+                                                                                            {
+                                                                                                <td style="text-align:center; font-size: small;">
+                                                                                                    <span id="btn_@lMatriculas[i].IdMatricula.ToString()_@j" onclick="LancamentoIndividual(this.id,  @Model[j].IdDiario,  @lMatriculas[i].IdMatricula, @Model[j].HoraAulaDia);">
+                                                                                                        <a href="#" ><i class="fa fa-plus-circle"></i></a>
+                                                                                                    </span>                                                                                                    
+                                                                                                </td>                                                                                                
+                                                                                            }
+                                                                                            nVerifica = 0;
 
-                                                                    </td>
-
-                                                                    nVerifica = 2;
-                                                                }
-
-                                                            }
-                                                            if (nVerifica == 0)
-                                                            {
-                                                                <td>&nbsp;<i class="fa fa-plus-circle"></i></td>
-                                                            }
-                                                        }
-                                                    }
-                                                </tr>
+                                                                                        }
+                                                                                    }
+                                                                                </tr>
                                             }
                                         }
                                     </tbody>
@@ -235,10 +221,42 @@
 
 
     </div>
-
+    <div class="alert alert-success alert-dismissible fade" role="alert">
+        <strong>Adicionado Presença!</strong> Para o aluno no dia escolhido.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
 </section>
 
+<script type="text/javascript">
+    function LancamentoIndividual (btn_id, idDiario, idMatricula, horaAulaDia) {
+        
+        var Dados = {
+            idDiario: idDiario,
+            idMatricula: idMatricula,
+            horaAulaDia: horaAulaDia
+
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Diario/LancamentoIndividual",
+            data: JSON.stringify(Dados),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                alert(data.msg);
+                document.getElementById(btn_id).innerHTML = "<b style='color:blue; font-size: small;'>P</b>";                
+            },
+            error: function () {
+                alert("Error occured!!")
+            }
+        });
+
+    }
+
+</script>
 
 
 

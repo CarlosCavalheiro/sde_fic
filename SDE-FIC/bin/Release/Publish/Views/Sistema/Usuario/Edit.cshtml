@@ -41,7 +41,7 @@
                                     }
                                     else
                                     {
-                                        @Html.TextBoxFor(model => model.Perfil, new { @class = "form-control", @Disabled = true});
+                                        @Html.TextBoxFor(model => model.Perfil, new { @class = "form-control", @readonly = "readonly" });
                                     }
 
 
@@ -57,7 +57,7 @@
                                     }
                                     else
                                     {
-                                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @Disabled = true })
+                                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @readonly = "readonly" })
 
                                     }
                                     @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })

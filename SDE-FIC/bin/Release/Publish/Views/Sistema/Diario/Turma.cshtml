@@ -63,23 +63,25 @@
                                 </div>
                                 <div class="box-body">
                                     @{int NAluno = 0;
-                                        for (int i = 0; i < Model.Turma.ListaMatriculas.Count(); i++)
+                                        List<SDE_FIC.Models.Matricula> alunos = new List<SDE_FIC.Models.Matricula>(); alunos = Model.Turma.ListaMatriculas.ToList();
+                                        for (int i = 0; i < alunos.Count(); i++)
                                         {
                                             NAluno = i + 1;
-                                            if (Model.Turma.ListaMatriculas[i].Situacao == "Evadido")
+                                            if (alunos[i].Situacao == "Evadido")
                                             {
 
-                                                <div>@NAluno) - <i class="fa fa-close text-red"></i> <strike>@Model.Turma.ListaMatriculas[i].Aluno.Nome</strike> *@Model.Turma.ListaMatriculas[i].DataSituacao.ToShortDateString()</div>
+                                                <div>@NAluno) - <i class="fa fa-close text-red"></i> <strike>@alunos[i].Aluno.Nome</strike> *@alunos[i].DataSituacao.ToShortDateString()</div>
                                             }
                                             else
                                             {
                                                 <div>
                                                     @NAluno) - <i class="fa fa-check text-green"></i>
-                                                @Model.Turma.ListaMatriculas[i].Aluno.Nome
-                                                @if (Model.Turma.ListaMatriculas[i].listaAproveitamentos.Count() > 0)
+                                                    @alunos[i].Aluno.Nome
+
+                                                @if (alunos[i].listaAproveitamentos.Count() > 0)
                                                 {
                                                     Write("(");
-                                                    foreach (var a in Model.Turma.ListaMatriculas[i].listaAproveitamentos)
+                                                    foreach (var a in alunos[i].listaAproveitamentos)
                                                     {
                                                         Write("*" + a.UnidadeCurricular.Sigla.ToString());
                                                     }
