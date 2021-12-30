@@ -2,15 +2,12 @@
 --
 -- Host: 127.0.0.1    Database: bdsde
 -- ------------------------------------------------------
+DROP DATABASE IF EXISTS bdsde;
+CREATE DATABASE bdsde;
+USE bdsde;
 --
 -- Table structure for table `aluno`
 --
-DROP DATABASE IF EXISTS bdsde;
-
-CREATE DATABASE bdsde;
-
-USE bdsde;
-
 DROP TABLE IF EXISTS `aluno`;
 
 CREATE TABLE `aluno` (
