@@ -7,7 +7,8 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>A:\Pesssoal\sde_fic\SDE-FIC\bin\Release\Publish</_PublishTargetUrl>
-    <History>True|2022-12-12T19:55:56.7349461Z;True|2021-11-30T17:49:57.0255596-03:00;</History>
+    <History>True|2022-12-19T19:50:28.1779057Z;True|2022-12-19T16:43:04.4523945-03:00;True|2022-12-19T16:28:19.1203112-03:00;True|2022-12-12T16:55:56.7349461-03:00;True|2021-11-30T17:49:57.0255596-03:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="admin-lte/css/AdminLTE.css">
@@ -449,10 +450,10 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>11/25/2022 20:53:26</publishTime>
     </File>
     <File Include="bin/SDE_FIC.dll">
-      <publishTime>12/12/2022 16:55:22</publishTime>
+      <publishTime>12/19/2022 16:50:16</publishTime>
     </File>
     <File Include="bin/SDE_FIC.pdb">
-      <publishTime>12/12/2022 16:55:22</publishTime>
+      <publishTime>12/19/2022 16:50:16</publishTime>
     </File>
     <File Include="bin/System.Buffers.dll">
       <publishTime>11/25/2022 20:53:26</publishTime>
@@ -3653,7 +3654,7 @@ ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.mi
       <publishTime>11/25/2022 20:53:20</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/12/2022 16:55:26</publishTime>
+      <publishTime>12/19/2022 16:50:16</publishTime>
     </File>
   </ItemGroup>
 </Project>
