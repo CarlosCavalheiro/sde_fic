@@ -22,7 +22,7 @@ namespace SDE_FIC.DAO
             try
             {
                 mConnection = new MySqlConnection();
-                mConnection.ConnectionString = "Server=127.0.0.1;Database=bdsde;Uid=root;Pwd='123456';";
+                mConnection.ConnectionString = "Server=localhost;Database=bdsde;Uid=root;Pwd='123456';";                
                 mConnection.Open();
 
             }
