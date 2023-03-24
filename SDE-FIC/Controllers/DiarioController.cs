@@ -3227,7 +3227,8 @@ namespace SDE_FIC.Controllers
 
             List<Matricula> lMatriculas = _turma.ListaMatriculas.OrderBy(x => x.Aluno.Nome).ToList();
 
-
+            int totalPaginaPorMatricula = lMatriculas.Count() / 32;
+            int totalPaginaPorDiario = lDiario.Count() / 28;
             /////////////////////////////////////////////////////////////////////////
             //Gerar PDF e Fazer DOWNLOAD para o Usuário            
             /////////////////////////////////////////////////////////////////////////
@@ -3239,11 +3240,13 @@ namespace SDE_FIC.Controllers
 
                 document.Open();
 
-                int Paginas = lMatriculas.Count() / 32;
+                int Paginas = (totalPaginaPorMatricula >= totalPaginaPorDiario)? totalPaginaPorMatricula : totalPaginaPorDiario;
                 int nAlunos = 0;
                 int k = 0;
                 int n = 0;
-                int nc = 0;
+                int nConteudo = 0;
+                int nPresenca = 0;
+                int nMes = 0;
                 decimal tFaltas = 0;
                 decimal tNota = 0;
                 string tResultado = " ";
@@ -3286,27 +3289,27 @@ namespace SDE_FIC.Controllers
                     tabelaConteudo.AddCell(celTitulo);
 
                     /*Conteudo da TabelaConteudo*/
-                    for (int e = 0; e < 35; e++)
+                    for (int e = 0; e < 28; e++)
                     {
 
-                        if (e < lDiario.Count())
+                        if (nConteudo < lDiario.Count())
                         {
                             iTextSharp.text.pdf.PdfPCell celConteudo = new iTextSharp.text.pdf.PdfPCell();
-                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[e].Data.Day.ToString() + "/" + lDiario[e].Data.Month.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
+                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[nConteudo].Data.Day.ToString() + "/" + lDiario[nConteudo].Data.Month.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
                             celConteudo.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
                             celConteudo.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                             celConteudo.PaddingBottom = 5;
                             tabelaConteudo.AddCell(celConteudo);
 
                             celConteudo = new iTextSharp.text.pdf.PdfPCell();
-                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[e].HoraAulaDia.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
+                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[nConteudo].HoraAulaDia.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
                             celConteudo.HorizontalAlignment = iTextSharp.text.Element.ALIGN_CENTER;
                             celConteudo.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                             celConteudo.PaddingBottom = 5;
                             tabelaConteudo.AddCell(celConteudo);
 
                             celConteudo = new iTextSharp.text.pdf.PdfPCell();
-                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[e].Conteudo.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
+                            celConteudo.Phrase = new Phrase(alturaLinha, lDiario[nConteudo].Conteudo.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
                             celConteudo.HorizontalAlignment = iTextSharp.text.Element.ALIGN_JUSTIFIED;
                             celConteudo.VerticalAlignment = iTextSharp.text.Element.ALIGN_MIDDLE;
                             celConteudo.PaddingBottom = 5;
@@ -3335,7 +3338,7 @@ namespace SDE_FIC.Controllers
                             celConteudo.PaddingBottom = 5;
                             tabelaConteudo.AddCell(celConteudo);
                         }
-                        nc++;
+                        nConteudo++;
                     };
 
                     #endregion
@@ -3670,30 +3673,12 @@ namespace SDE_FIC.Controllers
                     CelFrequencia.VerticalAlignment = Element.ALIGN_MIDDLE;
                     tabelaFrequencia.AddCell(CelFrequencia);
 
-                    int j = 0;
-                    int b = 28;
-
-
-                    while (j < b)
+                    for (int e = 0; e < 28; e++)
                     {
-                        if (j <= lDiario.Count())
+                        if (nMes < lDiario.Count())
                         {
                             CelFrequencia = new PdfPCell();
-                            if (IdUnidadeCurricular != 0)
-                            {
-                                if (j < lDiario.Count())
-                                {
-                                    CelFrequencia.Phrase = new Phrase(alturaLinha3, lDiario[j].Data.Month.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-                                }
-                                else
-                                {
-                                    CelFrequencia.Phrase = new Phrase(alturaLinha3, "", new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-                                }
-                            }
-                            else
-                            {
-                                CelFrequencia.Phrase = new Phrase(alturaLinha3, "", new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-                            };
+                            CelFrequencia.Phrase = new Phrase(alturaLinha3, lDiario[nMes].Data.Month.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
 
                         }
                         else
@@ -3704,7 +3689,7 @@ namespace SDE_FIC.Controllers
                         CelFrequencia.HorizontalAlignment = Element.ALIGN_CENTER;
                         CelFrequencia.VerticalAlignment = Element.ALIGN_MIDDLE;
                         tabelaFrequencia.AddCell(CelFrequencia);
-                        j++;
+                        nMes++;
                     }
 
 
@@ -3749,31 +3734,14 @@ namespace SDE_FIC.Controllers
                     CelFrequencia.HorizontalAlignment = Element.ALIGN_CENTER;
                     CelFrequencia.VerticalAlignment = Element.ALIGN_MIDDLE;
                     tabelaFrequencia.AddCell(CelFrequencia);
-
-
-                    j = 0;
-                    b = 28;
-                    while (j < b)
+                    
+                    
+                    for (int e = 0; e < 28; e++)
                     {
                         CelFrequencia = new PdfPCell();
-                        if (j <= lDiario.Count())
+                        if (nPresenca < lDiario.Count())
                         {
-                            if (IdUnidadeCurricular != 0)
-                            {
-                                if (j < lDiario.Count())
-                                {
-                                    CelFrequencia.Phrase = new Phrase(alturaLinha3, lDiario[j].Data.Day.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-                                }
-                                else
-                                {
-                                    CelFrequencia.Phrase = new Phrase(alturaLinha3, "", new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-                                };
-                            }
-                            else
-                            {
-                                CelFrequencia.Phrase = new Phrase(alturaLinha3, "", new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
-
-                            };
+                           CelFrequencia.Phrase = new Phrase(alturaLinha3, lDiario[nPresenca].Data.Day.ToString(), new Font(Font.FontFamily.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK));
                         }
                         else
                         {
@@ -3783,7 +3751,7 @@ namespace SDE_FIC.Controllers
                         CelFrequencia.HorizontalAlignment = Element.ALIGN_CENTER;
                         CelFrequencia.VerticalAlignment = Element.ALIGN_MIDDLE;
                         tabelaFrequencia.AddCell(CelFrequencia);
-                        j++;
+                        nPresenca++;
                     }
 
                     #endregion
@@ -3892,8 +3860,8 @@ namespace SDE_FIC.Controllers
 
 
                         /////////////////////Frequencia/////////////////////
-                        j = 0;
-                        b = 28;
+                        int j = 0;
+                        int b = 28;
 
                         if (lFrequencia != null)
                         {
